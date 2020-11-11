@@ -108,7 +108,7 @@ void GameSpriteBatch::Setup(Rect RenderViewPort)
 	glBufferData(GL_ARRAY_BUFFER,
 					vertexBufferSize,
 					NULL,
-					GL_STATIC_DRAW);
+					GL_DYNAMIC_COPY);
 
 	// Indices will be the exact same every time.
 	// Create the buffer and fill it.
@@ -141,7 +141,7 @@ void GameSpriteBatch::Setup(Rect RenderViewPort)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
 		indexBufferSize,
 		clientIndex,
-		GL_STATIC_DRAW);
+		GL_DYNAMIC_COPY);
 
 	// Free client memory
 	if (clientIndex != NULL)
