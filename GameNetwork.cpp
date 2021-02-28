@@ -49,7 +49,6 @@ void tcp_server::start_accept()
 	//GameConnection::pointer new_connection = GameConnection::create(acceptor_.get_io_context());
 	GameConnection::pointer new_connection = GameConnection::create(io_context_);
 
-
 	// Start accepting
 	acceptor_.async_accept(new_connection->socket(),
 		std::bind(&tcp_server::handle_accept, this, new_connection,

@@ -27,9 +27,9 @@ public:
 	bool is_client;
 	bool is_connecting;
 	// Creates a new shared ptr of tcp_connection
-	static pointer create(asio::io_service& io_service)
+	static pointer create(asio::io_context& io_context)
 	{
-		return pointer(new tcp_connection(io_service));
+		return pointer(new tcp_connection(io_context));
 	}
 
 	// Returns the socket
@@ -50,13 +50,14 @@ public:
 
 
 protected:
-	tcp_connection(asio::io_service& io_service)
-		: socket_(io_service),
-		resolver_(io_service)//,
-							 //time_out(io_service, boost::posix_time::seconds(TIME_OUT_TIME))
+	tcp_connection(asio::io_context& io_context)
+		: socket_(io_context),
+		resolver_(io_context)//,
+							 //time_out(io_context, boost::posix_time::seconds(TIME_OUT_TIME))
 	{
 		is_stopped = true;
 		is_connecting = false;
+		is_client = false;
 	}
 
 
@@ -101,9 +102,9 @@ class GameConnection : public tcp_connection
 public:
 	typedef std::shared_ptr<GameConnection> pointer;
 	// Creates a new shared ptr of GameConnection
-	static pointer create(asio::io_service& io_service)
+	static pointer create(asio::io_context& io_context)
 	{
-		return pointer(new GameConnection(io_service));
+		return pointer(new GameConnection(io_context));
 	}
 
 	// Called on completion of a read, must be overrode
@@ -116,8 +117,8 @@ public:
 	void DoConnect(const asio::error_code &error, asio::ip::tcp::resolver::iterator endItr) override;
 
 private:
-	GameConnection(asio::io_service& io_service)
-		: tcp_connection(io_service)
+	GameConnection(asio::io_context& io_context)
+		: tcp_connection(io_context)
 	{
 	}
 };
@@ -126,7 +127,7 @@ private:
 class tcp_server
 {
 public:
-	tcp_server(asio::io_service& io_service, unsigned int port);
+	tcp_server(asio::io_context& io_context, unsigned int port);
 	// Starts the server 
 	void start();
 	// Stops the server
@@ -154,8 +155,8 @@ protected:
 class GameServer : public tcp_server
 {
 public:
-	GameServer(asio::io_service& io_service, unsigned int port)
-		: tcp_server(io_service,port)
+	GameServer(asio::io_context& io_context, unsigned int port)
+		: tcp_server(io_context,port)
 	{
 	}
 	// Called on server start, must be overrode
