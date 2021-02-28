@@ -3,142 +3,11 @@
 #include <deque>
 ///////////////// THREADPOOL
 
-void ThreadPool::Stop()
-{
-	if (HasStopped())
-	{
-#ifdef _DEBUG
-		global_stream_lock.lock();
-		std::cout << "Attempted to Stop while service was stopped." << std::endl;
-		global_stream_lock.unlock();
-#endif
-		return;
-	}
 
-	stop_mutex.lock();
-	stopped = true;
-	stop_mutex.unlock();
-	io_service->stop();
-	worker_threads.join_all();  // These were causing the hive to never stop
-	work.reset();				// and this one, I moved them after io_service->stop(), seems to be fixed, keep an eye out
-
-}
-
-void ThreadPool::Reset()
-{
-	if (!HasStopped())
-	{
-#ifdef _DEBUG
-		global_stream_lock.lock();
-		std::cout << "Attempted to Reset ThreadPool while it has not been stopped." << std::endl;
-		global_stream_lock.unlock();
-#endif
-		return;
-	}
-
-	io_service.reset();
-	work.reset();
-}
-
-bool ThreadPool::HasStopped()
-{
-	stop_mutex.lock();
-	bool ret = stopped;
-	stop_mutex.unlock();
-	return ret;
-}
-
-void ThreadPool::WorkerThread(boost::shared_ptr< boost::asio::io_service > io_service)
-{
-//#ifdef _DEBUG
-//	global_stream_lock.lock();
-//	std::cout << "[" << boost::this_thread::get_id()
-//		<< "] Thread Start" << std::endl;
-//	global_stream_lock.unlock();
-//#endif
-	bool running = true;
-
-	while (running)
-	{
-		try
-		{
-			boost::system::error_code ec;
-			io_service->run(ec);
-			if (ec)
-			{
-				global_stream_lock.lock();
-				std::cout << "[" << boost::this_thread::get_id()
-					<< "] Error: " << ec << std::endl;
-				global_stream_lock.unlock();
-			}
-			break;
-		}
-		catch (std::exception & ex)
-		{
-			global_stream_lock.lock();
-			std::cout << "[" << boost::this_thread::get_id()
-				<< "] Exception: " << ex.what() << std::endl;
-
-			global_stream_lock.unlock();
-		}
-		
-		if (stopped)
-		{
-			stop_mutex.lock();
-			running = false;
-			stop_mutex.unlock();
-		}
-	}
-
-//#ifdef _DEBUG
-//	global_stream_lock.lock();
-//	std::cout << "[" << boost::this_thread::get_id()
-//		<< "] Thread Finish" << std::endl;
-//	global_stream_lock.unlock();
-//#endif
-}
-
-ThreadPool::ThreadPool(int NumOfThreads)
-{
-	numOfThreads = NumOfThreads;
-	stopped = true;
-}
-
-void ThreadPool::Start()
-{
-	if (!HasStopped())
-	{
-#ifdef _DEBUG
-		global_stream_lock.lock();
-		std::cout << "Attempted to Start ThreadPool while it is already started." << std::endl;
-		global_stream_lock.unlock();
-#endif
-		return;
-	}
-	try
-	{
-		stop_mutex.lock();
-		stopped = false;
-		stop_mutex.unlock();
-		io_service = boost::shared_ptr<boost::asio::io_service>(new boost::asio::io_service);
-		work = boost::shared_ptr<boost::asio::io_service::work>(new boost::asio::io_service::work(*io_service));
-		for (int x = 0; x < numOfThreads; x++)
-		{
-			worker_threads.create_thread(boost::bind(&ThreadPool::WorkerThread, this, io_service));
-		}
-
-	}
-	catch (std::exception& ex)
-	{
-		global_stream_lock.lock();
-		std::cout << "Exception in " << __FUNCTION__ << ": " << ex.what() << std::endl;
-		global_stream_lock.unlock();
-	}
-}
 
 ///////////////// TCP_SERVER
 
-void tcp_server::handle_accept(GameConnection::pointer new_connection, const boost::system::error_code& error)
+void tcp_server::handle_accept(GameConnection::pointer new_connection, const asio::error_code& error)
 {
 	OnAccept(new_connection, error);
 
@@ -147,10 +16,13 @@ void tcp_server::handle_accept(GameConnection::pointer new_connection, const boo
 		start_accept();
 }
 
-tcp_server::tcp_server(boost::asio::io_service& io_service, unsigned int port)
-	: acceptor_(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port)),
+tcp_server::tcp_server(asio::io_context& io_context, unsigned int port)
+	: io_context_(io_context),
+	acceptor_(io_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port)),
 	stopped_(false)
 {
+
+	//this->io_context = io_context;
 }
 
 void tcp_server::start()
@@ -174,30 +46,31 @@ void tcp_server::stop()
 void tcp_server::start_accept()
 {
 	// Create a new connection
-	GameConnection::pointer new_connection = GameConnection::create(acceptor_.get_io_service());
+	//GameConnection::pointer new_connection = GameConnection::create(acceptor_.get_io_context());
+	GameConnection::pointer new_connection = GameConnection::create(io_context_);
 
 
 	// Start accepting
 	acceptor_.async_accept(new_connection->socket(),
-		boost::bind(&tcp_server::handle_accept, this, new_connection,
-			boost::asio::placeholders::error));
+		std::bind(&tcp_server::handle_accept, this, new_connection,
+			std::placeholders::_1));
 }
 
 ///////////////// TCP_CONNECTION
 
-void tcp_connection::handle_write(std::string str, const boost::system::error_code& error, size_t bytes)
+void tcp_connection::handle_write(std::string str, const asio::error_code& error, size_t bytes)
 {
 	DoWrite(str, error, bytes);
 }
 
-void tcp_connection::handle_read(const boost::system::error_code& error, size_t bytes)
+void tcp_connection::handle_read(const asio::error_code& error, size_t bytes)
 {
 	std::string str;
 	if (!error)
 	{
 		// Convert to a string
-		boost::asio::streambuf::const_buffers_type bufs = m_message.data();
-		str = std::string(boost::asio::buffers_begin(bufs), boost::asio::buffers_begin(bufs) + bytes);
+		asio::streambuf::const_buffers_type bufs = m_message.data();
+		str = std::string(asio::buffers_begin(bufs), asio::buffers_begin(bufs) + bytes);
 		// "Erase" the buffer
 		m_message.consume(bytes);
 	}
@@ -221,7 +94,7 @@ void tcp_connection::Stop()
 
 }
 
-boost::asio::ip::tcp::socket& tcp_connection::socket()
+asio::ip::tcp::socket& tcp_connection::socket()
 {
 	return socket_;
 }
@@ -262,13 +135,13 @@ void tcp_connection::Send(std::string str)
 	//}
 	if (!is_stopped)
 	{
-		boost::asio::async_write(
+		asio::async_write(
 			socket_,
-			boost::asio::buffer(str.c_str(), str.size()),
-			boost::bind(&tcp_connection::handle_write, shared_from_this(),
+			asio::buffer(str.c_str(), str.size()),
+			std::bind(&tcp_connection::handle_write, shared_from_this(),
 				str,
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::bytes_transferred));
+				std::placeholders::_1,
+				std::placeholders::_2));// bytes_transferred));
 	}
 }
 
@@ -277,12 +150,12 @@ void tcp_connection::Read()
 	// until reads until a dilimeter
 	if (!is_stopped)
 	{
-		boost::asio::async_read_until(socket_,
+		asio::async_read_until(socket_,
 			m_message,
 			'\n',
-			boost::bind(&tcp_connection::handle_read, shared_from_this(),
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::bytes_transferred));
+			std::bind(&tcp_connection::handle_read, shared_from_this(),
+				std::placeholders::_1,//error,
+				std::placeholders::_2));// bytes_transferred));
 	}
 }
 
@@ -293,18 +166,18 @@ void tcp_connection::Connect(std::string addr, std::string port)
 	{
 		return;
 	}
-	endItr_ = resolver_.resolve(boost::asio::ip::tcp::resolver::query(addr, port));
-	if (endItr_ != boost::asio::ip::tcp::resolver::iterator())
+	endItr_ = resolver_.resolve(asio::ip::tcp::resolver::query(addr, port));
+	if (endItr_ != asio::ip::tcp::resolver::iterator())
 	{
 		is_connecting = true;
 		is_stopped = false;
 		socket_.async_connect(endItr_->endpoint(),
-			boost::bind(&tcp_connection::handle_connect, this, _1, endItr_));
+			std::bind(&tcp_connection::handle_connect, this, std::placeholders::_1, endItr_));
 
 	}
 }
 
-void tcp_connection::handle_connect(const boost::system::error_code &error, boost::asio::ip::tcp::resolver::iterator endItr)
+void tcp_connection::handle_connect(const asio::error_code &error, asio::ip::tcp::resolver::iterator endItr)
 {
 	is_connecting = false;
 	if (error)

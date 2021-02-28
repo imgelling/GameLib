@@ -12,7 +12,7 @@ shows up with a red background and is prepended with "ERROR."
 
 // INCLUDES ////////////////////////////////////////////////////////////////////
 #include <fstream>
-#include <boost/thread/mutex.hpp>
+#include <mutex>
 
 
 
@@ -39,5 +39,5 @@ class Log {
     void Error(std::string logline);
     void Warning(std::string logline);
     void Line();
-	boost::mutex streamlock;
+	std::mutex streamlock;
 };
