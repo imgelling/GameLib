@@ -32,6 +32,7 @@
 #include "GameGUI.h"
 #include "GamePixelMode.h"
 #include "GameDebug.h"
+#include "GameThreadPool.h"
 #ifdef GAME_DO_NETWORK
 #include "GameNetwork.h"
 #endif
