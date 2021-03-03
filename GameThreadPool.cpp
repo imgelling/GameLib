@@ -16,10 +16,8 @@ void ThreadPool::Stop()
 	stopped = true;
 	stop_mutex.unlock();
 	io_context->stop();
-	worker_threads.join();  // These were causing the hive to never stop
-	//for (int i = 0; i < worker_threads.size(); i++)
-		//worker_threads[i].join();
-	work.reset();				// and this one, I moved them after io_service->stop(), seems to be fixed, keep an eye out
+	worker_threads.join();  
+	work.reset();				
 
 }
 
@@ -56,7 +54,6 @@ void ThreadPool::WorkerThread(std::shared_ptr< asio::io_context > io_context)
 		global_stream_lock.unlock();
 	#endif
 	bool running = true;
-	//std::cout << "thread " << std::this_thread::get_id() << " started." << std::endl;
 	while (running)
 	{
 		try
@@ -65,20 +62,20 @@ void ThreadPool::WorkerThread(std::shared_ptr< asio::io_context > io_context)
 			io_context->run(ec);
 			if (ec)
 			{
-				this->global_stream_lock.lock();
+				global_stream_lock.lock();
 				std::cout << "[" << std::this_thread::get_id()
 					<< "] Error: " << ec << std::endl;
-				this->global_stream_lock.unlock();
+				global_stream_lock.unlock();
 			}
 			break;
 		}
 		catch (std::exception & ex)
 		{
-			this->global_stream_lock.lock();
+			global_stream_lock.lock();
 			std::cout << "[" << std::this_thread::get_id()
 				<< "] Exception: " << ex.what() << std::endl;
 
-			this->global_stream_lock.unlock();
+			global_stream_lock.unlock();
 		}
 
 		if (stopped)
@@ -124,8 +121,6 @@ void ThreadPool::Start()
 		work = std::shared_ptr<asio::io_context::work>(new asio::io_context::work(*io_context));
 		for (int x = 0; x < numOfThreads; x++)
 		{
-			//std::shared_ptr <std::thread> bob;
-			//worker_threads.emplace_back(*bob);// .create_thread(std::bind(&ThreadPool::WorkerThread, this, io_context));
 			worker_threads.create_thread(std::bind(&ThreadPool::WorkerThread, this, io_context));
 		}
 

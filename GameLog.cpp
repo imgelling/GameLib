@@ -7,7 +7,7 @@
 
 // METHODS /////////////////////////////////////////////////////////////////////
 
-void Log::Line()
+void GameLog::Line()
 {
 	//#ifdef _DEBUG
 	streamlock.lock();
@@ -19,29 +19,29 @@ void Log::Line()
 	streamlock.unlock();
 }
 
-Log::Log(std::string filename)
+GameLog::GameLog(std::string filename)
 {
 	streamlock.lock();
 	stream.open(filename.c_str(), std::ios::out);
 	streamlock.unlock();
 }
 
-void Log::Write(std::string logline)
+void GameLog::Write(std::string logline)
 {
 	Write(NORMAL, logline);
 }
 
-void Log::Error(std::string logline)
+void GameLog::Error(std::string logline)
 {
 	Write(ERRORS, logline);
 }
 
-void Log::Warning(std::string logline)
+void GameLog::Warning(std::string logline)
 {
 	Write(WARNING, logline);
 }
 
-void Log::Write(LogType type, std::string logline)
+void GameLog::Write(LogType type, std::string logline)
 {
 	std::string color;
 	std::string temp;
@@ -77,7 +77,7 @@ void Log::Write(LogType type, std::string logline)
 	streamlock.unlock();
 }
 
-inline void Log::GetTime()
+inline void GameLog::GetTime()
 {
 #ifdef __linux__
 
@@ -88,14 +88,14 @@ inline void Log::GetTime()
 #endif
 }
 
-void Log::Header(std::string name, std::string version)
+void GameLog::Header(std::string name, std::string version)
 {
 	Write(name + ", version " + version);
 	Write("Built on " + std::string(__DATE__) + " at " + std::string(__TIME__) + ".");
 	Line();
 }
 
-Log::~Log()
+GameLog::~GameLog()
 {
 	streamlock.lock();
 	stream.close();

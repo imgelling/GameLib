@@ -128,7 +128,7 @@ static void GLAPIENTRY openglCallbackFunction(GLenum source,
 	return;
 }
 
-void Game::SetLog(Log * log)
+void Game::SetLog(GameLog * log)
 {
 	Logger = log;
 	isLogSet = true;

@@ -67,7 +67,7 @@ class Game
         void SetWindowInfo(std::string, int, int, bool, bool);
 		void SetAttributes(GameAttributes);
         void ExitGame();
-		void SetLog(Log *);
+		void SetLog(GameLog *);
         virtual void Initialize()=0;
         virtual void LoadContent()=0;
         virtual void Shutdown()=0;
@@ -79,7 +79,7 @@ class Game
 		int GameHeight() { return gameHeight; }
 
 		void Present();
-        Log *Logger;
+        GameLog *Logger;
 
 		// Input
 		GameKeyboard Keyboard;

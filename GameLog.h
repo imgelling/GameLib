@@ -20,7 +20,7 @@ shows up with a red background and is prepended with "ERROR."
 
 
 // DECLARATIONS ////////////////////////////////////////////////////////////////
-class Log {
+class GameLog {
   private:
     std::ofstream stream;
 	char buffer[256];
@@ -32,8 +32,8 @@ class Log {
 
 
   public:
-    Log(std::string filename);
-    ~Log();
+    GameLog(std::string filename);
+    ~GameLog();
     void Header(std::string name, std::string version);
     void Write(std::string logline);
     void Error(std::string logline);

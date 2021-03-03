@@ -20,27 +20,22 @@ public:
 	void Reset();
 	std::shared_ptr <asio::io_context> GetService() { return io_context; };
 
-
 	// Used for queueing up work
 	template <typename a1>
 	void Enqueue(a1 arg1);
-
 	// Will try to do the work ASAP ignoring queue
 	template <typename a1>
 	void Do(a1 arg1);
 
-
 private:
-
 	void WorkerThread(std::shared_ptr< asio::io_context > io_context);
 	asio::detail::thread_group worker_threads;
-	//std::vector <std::thread> worker_threads;
 	bool stopped;
 	int numOfThreads;
 	std::shared_ptr< asio::io_context > io_context;
 	std::shared_ptr< asio::io_context::work > work;
-	std::mutex global_stream_lock;
-	std::mutex stop_mutex;
+	std::shared_mutex global_stream_lock;
+	std::shared_mutex stop_mutex;
 };
 
 template <typename a1>
@@ -70,5 +65,5 @@ void ThreadPool::Do(a1 arg1)
 #endif
 		return;
 	}
-	io_context->dispatch(std::bind(arg1));
+	io_context->dispatch(arg1);
 }
