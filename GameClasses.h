@@ -4,7 +4,7 @@
 
 // DEFINES /////////////////////////////////////////////////////////////////////
 
-#define DEG2RAD(x)  x*0.0174532925f
+
 
 
 // DECLARATIONS ////////////////////////////////////////////////////////////////
@@ -56,101 +56,3 @@ namespace Colors
 	const Color Gray(128, 128, 128, 255);
 	const Color DarkGray(64, 64, 64, 255);
 }
-
-// Ill come back to this
-
-class Point
-{
-    public:
-        int x;
-        int y;
-        Point();
-        Point(int, int);
-    private:
-};
-
-class Vector2f
-{
-public:
-	float x;
-	float y;
-	Vector2f();
-	Vector2f(float, float);
-	Vector2f &operator+ (const Vector2f &in)
-	{
-		this->x = this->x + in.x;
-		this->y = this->y + in.y;
-		return *this;
-	}
-	Vector2f &operator+= (const Vector2f &in)
-	{
-		this->x = this->x + in.x;
-		this->y = this->y + in.y;
-		return *this;
-	}
-	Vector2f &operator- (const Vector2f &in)
-	{
-		this->x = this->x - in.x;
-		this->y = this->y - in.y;
-		return *this;
-	}
-	Vector2f &operator-= (const Vector2f &in)
-	{
-		this->x = this->x - in.x;
-		this->y = this->y - in.y;
-		return *this;
-	}
-	Vector2f &operator* (const float &scalar)
-	{
-		this->x = this->x * scalar;
-		this->y = this->y * scalar;
-		return *this;
-	}
-	Vector2f &operator/ (const float &scalar)
-	{
-		this->x = this->x / scalar;
-		this->y = this->y / scalar;
-		return *this;
-	}
-	Vector2f &operator- (const Point &p)
-	{
-		this->x = this->x - p.x;
-		this->y = this->y - p.y;
-		return *this;
-	}
-	Vector2f &operator-= (const Point &p)
-	{
-		this->x = this->x - p.x;
-		this->y = this->y - p.y;
-		return *this;
-	}
-	Vector2f &operator+ (const Point &p)
-	{
-		this->x = this->x + p.x;
-		this->y = this->y + p.y;
-		return *this;
-	}
-	Vector2f &operator+= (const Point &p)
-	{
-		this->x = this->x + p.x;
-		this->y = this->y + p.y;
-		return *this;
-	}
-
-private:
-};
-
-class Rect
-{
-    public:
-        int left;
-        int top;
-        int right;
-        int bottom;
-        int Width();
-        int Height();
-        Rect();
-        Rect(int, int, int, int);
-    private:
-};
-

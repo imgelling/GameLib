@@ -112,55 +112,5 @@ void Color256::Set(unsigned char r2, unsigned char g2, unsigned char b2)
 	//PackedColor =  ((cA) | (cB) | (cG) | (cR));
 }
 
-// Point Struct ////////////////////////////////////////////////////////////////
-Point::Point()
-{
-    x = 0;
-    y = 0;
-}
-Point::Point(int x, int y)
-{
-	this->x = x;
-	this->y = y;
-}
 
 
-// Vector Struct ///////////////////////////////////////////////////////////////
-Vector2f::Vector2f(float x, float y)
-{
-    this->x = x;
-    this->y = y;
-}
-
-Vector2f::Vector2f()
-{
-	x = 0;
-	y = 0;
-}
-
-
-
-// Rect Struct /////////////////////////////////////////////////////////////////
-Rect::Rect()
-{
-    left = top = 0;
-    right = bottom = 0;
-}
-
-Rect::Rect(int left, int top, int width, int height)
-{
-    this->left = left;
-    this->top = top;
-    right = left + width;
-    bottom = top + height;
-}
-
-int Rect::Width()
-{
-    return right - left;
-}
-
-int Rect::Height()
-{
-    return bottom - top;
-}
