@@ -4,7 +4,7 @@ GameCollision::GameCollision()
 {
 }
 
-bool GameCollision::PointRectIntersect(Point point, Rect rect)
+bool GameCollision::PointRectIntersect(Point2i point, Recti rect)
 {
 	if (point.x < rect.left) return false;
 	if (point.x > rect.right) return false;
@@ -14,7 +14,7 @@ bool GameCollision::PointRectIntersect(Point point, Rect rect)
 	return true;
 }
 
-bool GameCollision::RectIntersect(Rect one, Rect two)
+bool GameCollision::RectIntersect(Recti one, Recti two)
 {
 	if (one.bottom < two.top) return false;
 	if (one.top > two.bottom) return false;
@@ -24,9 +24,9 @@ bool GameCollision::RectIntersect(Rect one, Rect two)
 	return true;
 }
 
-Point GameCollision::RectCollPushBack(Rect one, Rect two)
+Point2i GameCollision::RectCollPushBack(Recti one, Recti two)
 {
-	Point push(0,0);
+	Point2i push(0,0);
 
 	int x1 = gameABS(one.right - two.left);
 	int x2 = gameABS(one.left - two.right);

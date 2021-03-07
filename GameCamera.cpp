@@ -2,9 +2,9 @@
 
 GameCamera::GameCamera()
 {
-	Pos = Point(0,0);
-	Bounds = Rect(0,0,0,0);
-	ViewPort = Rect(0,0,0,0);
+	Pos = Point2i(0,0);
+	Bounds = Recti(0,0,0,0);
+	ViewPort = Recti(0,0,0,0);
 }
 
 void GameCamera::SetPos(int x, int y)
@@ -17,14 +17,14 @@ void GameCamera::SetPos(int x, int y)
 	Pos.y = y;
 }
 
-void GameCamera::SetBounds(Rect bounds)
+void GameCamera::SetBounds(Recti bounds)
 {
 	Bounds = bounds;
 }
 
-Rect GameCamera::GetViewPort()
+Recti GameCamera::GetViewPort()
 {
 	//Rect view;
-	Rect view (Pos.x / 64, Pos.y / 64,16+1,12+1);
+	Recti view (Pos.x / 64, Pos.y / 64,16+1,12+1);
 	return view;
 }

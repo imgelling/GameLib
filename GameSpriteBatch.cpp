@@ -82,7 +82,7 @@ void GameSpriteBatch::Disable2D()
 {
 }
 
-void GameSpriteBatch::Setup(Rect RenderViewPort)
+void GameSpriteBatch::Setup(Recti RenderViewPort)
 {
 	lastTextureId = 0;
 	vertexId = 0;
@@ -273,12 +273,12 @@ void GameSpriteBatch::End()
 void GameSpriteBatch::Draw(GameTexture2D tex, int x, int y, Color color)
 {
 	Draw(tex,
-		Rect(x,y,tex.width,tex.height),
-		Rect(0,0,tex.width,tex.height),
+		Recti(x,y,tex.width,tex.height),
+		Recti(0,0,tex.width,tex.height),
 		color);
 }
 
-void GameSpriteBatch::Draw(GameTexture2D tex, Rect dest, Rect src, Color color)
+void GameSpriteBatch::Draw(GameTexture2D tex, Recti dest, Recti src, Color color)
 {
 	if ((tex.bind != lastTextureId))
 	{
@@ -408,11 +408,11 @@ void GameSpriteBatch::Draw(GameTexture2D tex, Rect dest, Rect src, Color color)
 	//vertexBufferUsed++;
 }
 
-void GameSpriteBatch::Draw(GameTexture2D tex, Point dest, Color color)
+void GameSpriteBatch::Draw(GameTexture2D tex, Point2i dest, Color color)
 {
 	Draw(tex,
-		Rect(dest.x,dest.y,tex.width,tex.height),
-		Rect(0,0,tex.width,tex.height),
+		Recti(dest.x,dest.y,tex.width,tex.height),
+		Recti(0,0,tex.width,tex.height),
 		color);
 }
 
@@ -422,7 +422,7 @@ void GameSpriteBatch::DrawString(GameSpriteFont font, std::string Str, int x, in
 		int CurX = x;
 		int CurY = y;
 		int Width, Height;
-		Rect src, dest;
+		Recti src, dest;
 		short ch;
 
 		for( unsigned int i = 0; i < Str.size(); ++i )
@@ -447,7 +447,7 @@ void GameSpriteBatch::DrawString(GameSpriteFont font, std::string Str, int x, in
 		}
 }
 
-void GameSpriteBatch::Draw(GameTexture2D tex, Rect dest, Rect src, Point origin, Color color)
+void GameSpriteBatch::Draw(GameTexture2D tex, Recti dest, Recti src, Point2i origin, Color color)
 {
 	dest.left -= origin.x;
 	dest.top -= origin.y;
@@ -456,13 +456,14 @@ void GameSpriteBatch::Draw(GameTexture2D tex, Rect dest, Rect src, Point origin,
 	Draw(tex,dest,src,color);
 }
 
-Vector2f GameSpriteBatch::RotatePoint(Vector2f toRot, Point around, const float &cosr, const float &sinr)
+Vector2f GameSpriteBatch::RotatePoint(Vector2f toRot, Point2i around, const float &cosr, const float &sinr)
 {
 	//float x,y;
 	Vector2f ret;
 
 	// Translate to origin
-	toRot -= around;
+	toRot.x = (float)(toRot.x - around.x);
+	toRot.y = (float)(toRot.y - around.y);
 	//x = (float)(toRot.x -around.x);
 	//y = (float)(toRot.y -around.y);
 
@@ -471,7 +472,8 @@ Vector2f GameSpriteBatch::RotatePoint(Vector2f toRot, Point around, const float 
 	ret.y = (toRot.x * sinr + toRot.y * cosr);
 
 	// Translate back
-	ret += around;
+	ret.x = ret.y + around.y;
+	ret.y = ret.y + around.y;
 	//ret.x += around.x;
 	//ret.y += around.y;
 
@@ -479,12 +481,12 @@ Vector2f GameSpriteBatch::RotatePoint(Vector2f toRot, Point around, const float 
 	return ret;
 }
 
-void GameSpriteBatch::Draw(GameTexture2D tex, Rect dest, Rect src, Point origin, float rotation, Color color)
+void GameSpriteBatch::Draw(GameTexture2D tex, Recti dest, Recti src, Point2i origin, float rotation, Color color)
 {
 	float cosr = cosf(rotation);
 	float sinr = sinf(rotation);
 	Vector2f tl,tr,bl,br;
-	Point around;
+	Point2i around;
 
 	around.x = dest.left + origin.x;
 	around.y = dest.top + origin.y;

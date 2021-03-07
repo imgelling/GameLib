@@ -106,9 +106,9 @@ void GameMouse::SetAcceleration(bool mouseAccel)
 }
 
 // Mouse data retrieval methods
-Point GameMouse::GetMovement()
+Point2i GameMouse::GetMovement()
 {
-	Point ret;
+	Point2i ret;
 	SDL_GetRelativeMouseState(&ret.x, &ret.y);
 	return ret;
 }
@@ -123,7 +123,7 @@ void GameMouse::SetRelativeMode(bool mode)
 		SDL_SetRelativeMouseMode(SDL_FALSE);
 }
 
-Point GameMouse::GetPosition()
+Point2i GameMouse::GetPosition()
 {
 	int x, y;
 	SDL_GetWindowSize(win, &x, &y);
@@ -131,11 +131,11 @@ Point GameMouse::GetPosition()
 	float scaley = gameHeight / (float)y;
 	if (SDL_GetRelativeMouseMode() == SDL_TRUE)
 	{
-		return Point(int(rposx*scalex), int(rposy*scaley));
+		return Point2i(int(rposx*scalex), int(rposy*scaley));
 	}
 	else
 	{
-		return Point(int(posx*scalex), int(posy*scaley));
+		return Point2i(int(posx*scalex), int(posy*scaley));
 	}
 }
 
@@ -164,9 +164,9 @@ bool GameMouse::DblClicked(unsigned int butt)
 	return false;
 }
 
-Point GameMouse::GetWheelMovement()
+Point2i GameMouse::GetWheelMovement()
 {
-	return Point(scrollX, scrollY);
+	return Point2i(scrollX, scrollY);
 }
 
 

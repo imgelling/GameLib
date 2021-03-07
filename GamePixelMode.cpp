@@ -81,9 +81,9 @@ void GamePixelMode::Flip(GameSpriteBatch *sb, bool full)
 	}
 
 	if (full)
-		sb->Draw(WindowBuffer, Rect(0, 0, gameWidth, gameHeight), Rect(0, 0, width, height), Colors::White);
+		sb->Draw(WindowBuffer, Recti(0, 0, gameWidth, gameHeight), Recti(0, 0, width, height), Colors::White);
 	else
-		sb->Draw(WindowBuffer, Rect(posx, posy, (int)(width * sx), (int)(height * sy)), Rect(0, 0, width, height), Colors::White);
+		sb->Draw(WindowBuffer, Recti(posx, posy, (int)(width * sx), (int)(height * sy)), Recti(0, 0, width, height), Colors::White);
 	// 160, 60, *3 for 720
 	// 106, 40, *5 for 1080
 }

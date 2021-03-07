@@ -9,6 +9,7 @@
 #include "GameContent_SpriteFont.h"
 #include "GameContent_Shader.h"
 #include "GameClasses.h"
+#include "GameMath.h"
 
 
 //#include <glm/gtc/matrix_transform.hpp>
@@ -24,7 +25,7 @@ class GameSpriteBatch {
 		GameSpriteBatch();
 		~GameSpriteBatch();
 		// Need to add states/blend/etc to begin()
-		void Setup(Rect RenderViewPort);
+		void Setup(Recti RenderViewPort);
 		void Begin();
 		//void Begin(bool UseDefault);
 		void End();
@@ -32,10 +33,10 @@ class GameSpriteBatch {
 		// These are sprite drawing functions will later implement more
 		// to include rotations, scaling, and origin.
 		void Draw(GameTexture2D tex, int x, int y, Color color);
-        void Draw(GameTexture2D tex, Point dest, Color color);
-        void Draw(GameTexture2D tex, Rect dest, Rect src, Color color);
-		void Draw(GameTexture2D tex, Rect dest, Rect src, Point origin, Color color);
-		void Draw(GameTexture2D tex, Rect dest, Rect src, Point origin, float rotation, Color color);
+        void Draw(GameTexture2D tex, Point2i dest, Color color);
+        void Draw(GameTexture2D tex, Recti dest, Recti src, Color color);
+		void Draw(GameTexture2D tex, Recti dest, Recti src, Point2i origin, Color color);
+		void Draw(GameTexture2D tex, Recti dest, Recti src, Point2i origin, float rotation, Color color);
 		void DrawString(GameSpriteFont font, std::string Str, int x, int y, Color color);
 
 
@@ -45,7 +46,7 @@ class GameSpriteBatch {
 		GLuint vertexId;
 		GLuint indexId;
 		Shader shader;
-		Rect renderViewPort;
+		Recti renderViewPort;
 
 		int texture_location;
 		int ortho_location;
@@ -66,7 +67,7 @@ class GameSpriteBatch {
 		void Render();
 		void Enable2D();
 		void Disable2D();
-		Vector2f RotatePoint(Vector2f toRot, Point around, const float &cosr, const float &sinr);
+		Vector2f RotatePoint(Vector2f toRot, Point2i around, const float &cosr, const float &sinr);
 
 		struct Vertex {
 			float x,y;

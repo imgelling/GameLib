@@ -17,7 +17,7 @@
 
 
 
-
+#include "GameMath.h"
 #include "GameSpriteBatch.h"
 #include "GameWindow.h"
 #include "GameTimer.h"

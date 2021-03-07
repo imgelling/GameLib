@@ -7,6 +7,7 @@
 #include <SDL.h>
 #endif
 #include "GameClasses.h"
+#include "GameMath.h"
 #include <map>
 // Implement a get mouse position/movement scaled?
 
@@ -31,9 +32,9 @@ class GameMouse
 public:
 	GameMouse();
 	~GameMouse();
-	Point GetPosition();
-	Point GetMovement();
-	Point GetWheelMovement();
+	Point2i GetPosition();
+	Point2i GetMovement();
+	Point2i GetWheelMovement();
 	bool IsPressed(unsigned int);
 	bool Clicked(unsigned int);
 	bool DblClicked(unsigned int);

@@ -2,6 +2,7 @@
 
 #include "GameSpriteBatch.h"
 #include "GameSpriteSheet.h"
+#include "GameMath.h"
 
 class GameGUI
 {
@@ -12,7 +13,7 @@ public:
 	void SetSpriteBatch(GameSpriteBatch *);
 	void SetTexture(GameTexture2D);
 	void SetSpriteSheet(GameSpriteSheet);
-	void Box(Rect, Color);
+	void Box(Recti, Color);
 	void HScrollBar(int, int, int, float, Color);
 	void VScrollBar(int, int, int, float, Color);
 	void Radial(int, int, bool, Color);

@@ -11,7 +11,7 @@ void GameSpriteSheet::Initialize(GameTexture2D *tex, int width, int height)
 	tileHeight = height;
 	tilePerRow = texture->width / width;// ((float)texture->width / (float)width);
 }
-void GameSpriteSheet::Initialize(GameTexture2D *tex, Point dim)
+void GameSpriteSheet::Initialize(GameTexture2D *tex, Point2i dim)
 {
 	texture = tex;
 	tileWidth = dim.x;
@@ -20,9 +20,9 @@ void GameSpriteSheet::Initialize(GameTexture2D *tex, Point dim)
 }
 
 
-Rect GameSpriteSheet::GetRectFromId(int id)
+Recti GameSpriteSheet::GetRectFromId(int id)
 {
-	Rect ret(0,0,0,0);
+	Recti ret(0,0,0,0);
 	if (texture == NULL) return ret;
 	ret.left = id % tilePerRow * tileWidth;
 	ret.top = id / tilePerRow * (tileHeight); //tileHeight;
