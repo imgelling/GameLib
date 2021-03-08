@@ -462,8 +462,9 @@ Vector2f GameSpriteBatch::RotatePoint(Vector2f toRot, Point2i around, const floa
 	Vector2f ret;
 
 	// Translate to origin
-	toRot.x = (float)(toRot.x - around.x);
-	toRot.y = (float)(toRot.y - around.y);
+	toRot.x = (toRot.x - around.x);
+	//toRot.y = (float)(toRot.y - around.y);
+	
 	//x = (float)(toRot.x -around.x);
 	//y = (float)(toRot.y -around.y);
 

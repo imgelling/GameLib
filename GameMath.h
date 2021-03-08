@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include <iostream>
 
 #define DEG2RAD(x)  x*0.0174532925f
 
@@ -21,7 +22,7 @@ public:
 	T x;
 	T y;
 	Point() : x((T)0.0), y((T)0.0) {};
-	Point(T x, T y)
+	Point(const T& x, const T& y)
 	{
 		this->x = x;
 		this->y = y;
@@ -39,74 +40,74 @@ class Vector2
 public:
 	T x;
 	T y;
-	Vector2() : x(0.0), y(0.0){}
-	Vector2(T x, T y)
+	Vector2() : x((T)0.0), y((T)0.0) {}
+	Vector2(const T& x, const T& y)
 	{
 		this->x = x;
 		this->y = y;
 	}
-	Vector2 operator+ (const Vector2 &in)
+	Vector2 operator+ (const Vector2& rhs)
 	{
 		Vector2<T> c;
-		c.x = x + in.x;
-		c.y = y + in.y;
+		c.x = x + rhs.x;
+		c.y = y + rhs.y;
 		return c;
 	}
-	Vector2 &operator+= (const Vector2 &in)
+	Vector2& operator+= (const Vector2& rhs)
 	{
-		x = x + in.x;
-		y = y + in.y;
+		x = x + rhs.x;
+		y = y + rhs.y;
 		return *this;
 	}
-	Vector2 operator- (const Vector2 &in)
+	Vector2 operator- (const Vector2& rhs)
 	{
 		Vector2<T> c;
-		c.x = x - in.x;
-		c.y = y - in.y;
+		c.x = x - rhs.x;
+		c.y = y - rhs.y;
 		return c;
 	}
-	Vector2 &operator-= (const Vector2 &in)
+	Vector2& operator-= (const Vector2& rhs)
 	{
-		x = x - in.x;
-		y = y - in.y;
+		x = x - rhs.x;
+		y = y - rhs.y;
 		return *this;
 	}
-	Vector2 operator* (const T &scalar)
+	Vector2 operator* (const T& scalar)
 	{
-		Vector2<T> c(x,y);
+		Vector2<T> c(x, y);
 		c.x = x * scalar;
 		c.y = y * scalar;
 		return c;
 	}
-	Vector2 operator/ (const T &scalar)
+	Vector2 operator/ (const T& scalar)
 	{
-		Vector2<T> c(x,y);
+		Vector2<T> c(x, y);
 		c.x = x / scalar;
 		c.y = y / scalar;
 		return c;
 	}
-	Vector2 operator- (const Point<T> &p)
+	Vector2 operator- (const Point<T>& p)
 	{
 		Vector2<T> c;
 		c.x = x - p.x;
 		c.y = y - p.y;
 		return c;
 	}
-	Vector2 &operator-= (const Point<T> &p)
+	Vector2& operator-= (const Point<T>& p)
 	{
 		//Vector2<T> c;
 		x = x - p.x;
 		y = y - p.y;
 		return *this;
 	}
-	Vector2 operator+ (const Point<T> &p)
+	Vector2 operator+ (const Point<T>& p)
 	{
 		Vector2<T> c;
 		c.x = x + p.x;
 		c.y = y + p.y;
 		return c;
 	}
-	Vector2 &operator+= (const Point<T> &p)
+	Vector2& operator+= (const Point<T>& p)
 	{
 		//Vector2<T> c;
 		x = x + p.x;
@@ -116,17 +117,17 @@ public:
 
 	T Mag2() { return ((x * x) + (y * y)); }
 	T Mag() { return sqrt((x * x) + (y * y)); }
-	Vector2 Normalize() 
+	Vector2 Normalize()
 	{
-		Vector2<T> c(x,y);
+		Vector2<T> c(x, y);
 		c = c / Mag();
 		return c;
 	}
-	double Dot(const Vector2<T>&rhs) 
+	double Dot(const Vector2<T>& rhs)
 	{
 		return (x * rhs.x) + (y * rhs.y);
 	}
-	Vector2 LerpV2(const Vector2<T>& second, const T by)
+	Vector2 LerpV2(const Vector2<T>& second, const T& by)
 	{
 		Vector2<T> ret;
 		ret.x = Lerp(x, second.x, by);
@@ -147,48 +148,48 @@ public:
 	T x;
 	T y;
 	T z;
-	Vector3() : x(0.0), y(0.0), z(0.0) {}
-	Vector3(T x, T y, T z)
+	Vector3() : x((T)0.0), y((T)0.0), z((T)0.0) {}
+	Vector3(const T& x, const T& y, const T& z)
 	{
 		this->x = x;
 		this->y = y;
 		this->z = z;
 	}
-	Vector3 operator+ (const Vector3& in)
+	Vector3 operator+ (const Vector3& rhs)
 	{
 		Vector3<T> c;
-		c.x = x + in.x;
-		c.y = y + in.y;
-		c.z = z + in.z;
+		c.x = x + rhs.x;
+		c.y = y + rhs.y;
+		c.z = z + rhs.z;
 		return c;
 	}
-	Vector3 &operator+= (const Vector3& in)
+	Vector3& operator+= (const Vector3& rhs)
 	{
 		//Vector3<T> c;
-		x = x + in.x;
-		y = y + in.y;
-		z = z + in.z;
+		x = x + rhs.x;
+		y = y + rhs.y;
+		z = z + rhs.z;
 		return *this;
 	}
-	Vector3 operator- (const Vector3& in)
+	Vector3 operator- (const Vector3& rhs)
 	{
 		Vector3<T> c;
-		c.x = x + in.x;
-		c.y = y + in.y;
-		c.z = z + in.z;
+		c.x = x + rhs.x;
+		c.y = y + rhs.y;
+		c.z = z + rhs.z;
 		return c;
 	}
-	Vector3 &operator-= (const Vector3& in)
+	Vector3& operator-= (const Vector3& rhs)
 	{
 		//Vector3<T> c;
-		x = x - in.x;
-		y = y - in.y;
-		z = z - in.z;
+		x = x - rhs.x;
+		y = y - rhs.y;
+		z = z - rhs.z;
 		return *this;
 	}
 	Vector3 operator* (const T& scalar)
 	{
-		Vector3<T> c(x,y,z);
+		Vector3<T> c(x, y, z);
 		c.x = c.x * scalar;
 		c.y = c.y * scalar;
 		c.z = c.z * scalar;
@@ -196,7 +197,7 @@ public:
 	}
 	Vector3 operator/ (const T& scalar)
 	{
-		Vector3<T> c(x,y,z);
+		Vector3<T> c(x, y, z);
 		c.x = c.x / scalar;
 		c.y = c.y / scalar;
 		c.z = c.z / scalar;
@@ -204,7 +205,7 @@ public:
 	}
 	double Mag2() { return ((x * x) + (y * y) + (z * z)); }
 	double Mag() { return sqrt((x * x) + (y * y) + (z * z)); }
-	double Dot(const Vector2<T>&rhs) {
+	double Dot(const Vector2<T>& rhs) {
 		return (x * rhs.x) + (y * rhs.y) + (z * rhs.z);
 	}
 	Vector3 Normalize()
@@ -244,10 +245,10 @@ public:
 	T top;
 	T right;
 	T bottom;
-	T Width() {	return right - left; }
+	T Width() { return right - left; }
 	T Height() { return bottom - top; }
 	Rect() : left((T)0.0), top((T)0.0), right((T)0.0), bottom((T)0.0) {}
-	Rect(T left, T top, T right, T bottom)
+	Rect(const T& left, const T& top, const T& right, const T& bottom)
 	{
 		this->left = left;
 		this->top = top;
@@ -267,59 +268,53 @@ class Matrix4x4
 public:
 	T m[16];// = { 0.0 };
 	Matrix4x4() { SetIdentity(); }
-	Matrix4x4(const T& in)
+	Matrix4x4(const Matrix4x4& in)
 	{
 		for (int i = 0; i < 16; i++)
 		{
 			m[i] = in.m[i];
 		}
 	}
-	Matrix4x4(const T in[])
+	Matrix4x4(const T(&in)[16])
 	{
 		for (int i = 0; i < 16; i++)
 		{
 			m[i] = in[i];
 		}
 	}
-	void SetIdentity()
-	{
-		for (int i = 0; i < 16; i++)
-		{
-			if (i % 5 == 0) m[i] = 1.0;
-			else m[i] = 0.0;
-		}
-	}
-	Matrix4x4 operator+ (const Matrix4x4 &in)
+	T& operator[](const int& i) { return m[i]; }
+	const T& operator[] (const int& i) const { return m[i]; }
+	Matrix4x4 operator+ (const Matrix4x4& rhs)
 	{
 		Matrix4x4<T> ret;
 		for (int i = 0; i < 16; i++)
 		{
-			ret.m[i] = m[i] + in.m[i];
+			ret.m[i] = m[i] + rhs.m[i];
 		}
 		return ret;
 	}
-	Matrix4x4 &operator+= (const Matrix4x4& in)
+	Matrix4x4& operator+= (const Matrix4x4& rhs)
 	{
 		for (int i = 0; i < 16; i++)
 		{
-			m[i] = m[i] + in.m[i];
+			m[i] = m[i] + rhs.m[i];
 		}
 		return *this;
 	}
-	Matrix4x4 operator- (const Matrix4x4& in)
+	Matrix4x4 operator- (const Matrix4x4& rhs)
 	{
 		Matrix4x4<T> ret;
 		for (int i = 0; i < 16; i++)
 		{
-			ret.m[i] = m[i] - in.m[i];
+			ret.m[i] = m[i] - rhs.m[i];
 		}
 		return ret;
 	}
-	Matrix4x4 &operator-= (const Matrix4x4& in)
+	Matrix4x4& operator-= (const Matrix4x4& rhs)
 	{
 		for (int i = 0; i < 16; i++)
 		{
-			m[i] = m[i] - in.m[i];
+			m[i] = m[i] - rhs.m[i];
 		}
 		return *this;
 	}
@@ -332,7 +327,7 @@ public:
 		}
 		return ret;
 	}
-	Matrix4x4 &operator*= (const T& scalar)
+	Matrix4x4& operator*= (const T& scalar)
 	{
 		//Matrix4x4<T> ret;
 		for (int i = 0; i < 16; i++)
@@ -341,7 +336,7 @@ public:
 		}
 		return *this;
 	}
-	Matrix4x4 operator* (const Matrix4x4& in)
+	Matrix4x4 operator* (const Matrix4x4& rhs)
 	{
 		Matrix4x4<T> ret;
 
@@ -352,12 +347,22 @@ public:
 				ret.m[j * 4 + i] = 0;  // zero out location in return
 				for (int k = 0; k < 4; k++)
 				{
-					ret.m[j * 4 + i] += m[k * 4 + i] * in.m[j * 4 + k];
+					ret.m[j * 4 + i] += m[k * 4 + i] * rhs.m[j * 4 + k];
 				}
 			}
 		}
 
 		return ret;
+	}
+	void SetIdentity()
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			//if (i % 5 == 0) m[i] = 1.0;
+			//else m[i] = 0.0;
+			m[i] = (T)0.0;
+		}
+		m[0] = m[5] = m[10] = m[15] = (T)1.0;
 	}
 };
 typedef Matrix4x4<double> Matrix4x4d;
