@@ -293,10 +293,7 @@ public:
 	}
 	Matrix4x4(const T(&in)[16])
 	{
-		for (int i = 0; i < 16; i++)
-		{
-			m[i] = in[i];
-		}
+		memcpy(m, in, sizeof(in));
 	}
 	inline T& operator[](const int& i) { return m[i]; }
 	inline const T& operator[] (const int& i) const { return m[i]; }
