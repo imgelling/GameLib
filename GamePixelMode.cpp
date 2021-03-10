@@ -113,7 +113,7 @@ void GamePixelMode::CreateBuffers(int width, int height, int resW, int resH)
 		glDeleteTextures(1, &WindowBuffer.bind);
 	}
 	Video = NULL;
-	Video = new GLuint[width * height];
+	Video = new GLuint[(GLuint)(width * height)];
 
 	current = 0;
 	

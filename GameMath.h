@@ -4,16 +4,6 @@
 
 #define DEG2RAD(x)  x*0.0174532925f
 
-
-// Lerp
-template <typename T>
-T Lerp(T first, T second, T by)
-{
-	T ret = first * (1 - by) + second * by;
-	return ret;
-}
-
-
 // Point 
 template <typename T>
 class Point
@@ -120,21 +110,38 @@ public:
 	Vector2 Normalize()
 	{
 		Vector2<T> c(x, y);
-		c = c / Mag();
-		return c;
+		return c / Mag();
 	}
 	double Dot(const Vector2<T>& rhs)
 	{
 		return (x * rhs.x) + (y * rhs.y);
 	}
-	Vector2 LerpV2(const Vector2<T>& second, const T& by)
+	Vector2 Lerp(const Vector2<T>& second, const T& by)
 	{
-		Vector2<T> ret;
-		ret.x = Lerp(x, second.x, by);
-		ret.y = Lerp(y, second.y, by);
-		return ret;
+		return *this * (1 - by) + (Vector2<T>)second * by;
+	}
+	Vector2 NLerp(const Vector2<T>& second, const T& by)
+	{
+		return Lerp(second, by).Normalize();
+	}
+	Vector2 SLerp(const Vector2<T>& second, const T& by)
+	{
+		double dot = Dot(second);
+		if (dot < -1.0) dot = -1.0;
+		else if (dot > 1.0) dot = 1.0;
+		double theta = std::acos(dot) * by;
+		Vector2 relative = (Vector2<T>)second - (*this * by);
+		relative = relative.Normalize();
+		return ((*this * std::cos(theta)) + (relative * std::sin(theta)));
 	}
 private:
+	// Lerp
+	template <typename K>
+	K _Lerp(K first, K second, K by)
+	{
+		K ret = first * (1 - by) + second * by;
+		return ret;
+	}
 };
 typedef Vector2<float> Vector2f;
 typedef Vector2<double> Vector2d;
@@ -205,14 +212,13 @@ public:
 	}
 	double Mag2() { return ((x * x) + (y * y) + (z * z)); }
 	double Mag() { return sqrt((x * x) + (y * y) + (z * z)); }
-	double Dot(const Vector2<T>& rhs) {
+	double Dot(const Vector3<T>& rhs) {
 		return (x * rhs.x) + (y * rhs.y) + (z * rhs.z);
 	}
 	Vector3 Normalize()
 	{
 		Vector3<T> c(x, y, z);
-		c = c / Mag();
-		return c;
+		return c / Mag();
 	}
 	Vector3 Cross(const Vector3& rhs)
 	{
@@ -222,13 +228,23 @@ public:
 		t.z = (x * rhs.y) - (rhs.y * x);
 		return t;
 	}
-	Vector3 LerpV3(const Vector3<T>& second, const T by)
+	Vector3 Lerp(const Vector3<T>& second, const T by)
 	{
-		Vector3<T> ret;
-		ret.x = Lerp(x, second.x, by);
-		ret.y = Lerp(y, second.y, by);
-		ret.z = Lerp(z, second.z, by);
-		return ret;
+		return *this * (1 - by) + (Vector3<T>)second * by;
+	}
+	Vector3 NLerp(const Vector3<T>& second, const T& by)
+	{
+		return Lerp(second, by).Normalize();
+	}
+	Vector3 SLerp(const Vector3<T>& second, const T& by)
+	{
+		double dot = Dot(second);
+		if (dot < -1.0) dot = -1.0;
+		else if (dot > 1.0) dot = 1.0;
+		double theta = std::acos(dot) * by;
+		Vector3 relative = (Vector3<T>)second - (*this * by);
+		relative = relative.Normalize();
+		return ((*this * std::cos(theta)) + (relative * std::sin(theta)));
 	}
 private:
 };
@@ -282,8 +298,8 @@ public:
 			m[i] = in[i];
 		}
 	}
-	T& operator[](const int& i) { return m[i]; }
-	const T& operator[] (const int& i) const { return m[i]; }
+	inline T& operator[](const int& i) { return m[i]; }
+	inline const T& operator[] (const int& i) const { return m[i]; }
 	Matrix4x4 operator+ (const Matrix4x4& rhs)
 	{
 		Matrix4x4<T> ret;
@@ -363,6 +379,21 @@ public:
 			m[i] = (T)0.0;
 		}
 		m[0] = m[5] = m[10] = m[15] = (T)1.0;
+	}
+	double Determinant() {
+		return
+			m[12] * m[9] * m[6] * m[3] - m[8] * m[13] * m[6] * m[3] -
+			m[12] * m[5] * m[10] * m[3] + m[4] * m[13] * m[10] * m[3] +
+			m[8] * m[5] * m[14] * m[3] - m[4] * m[9] * m[14] * m[3] -
+			m[12] * m[9] * m[2] * m[7] + m[8] * m[13] * m[2] * m[7] +
+			m[12] * m[1] * m[10] * m[7] - m[0] * m[13] * m[10] * m[7] -
+			m[8] * m[1] * m[14] * m[7] + m[0] * m[9] * m[14] * m[7] +
+			m[12] * m[5] * m[2] * m[11] - m[4] * m[13] * m[2] * m[11] -
+			m[12] * m[1] * m[6] * m[11] + m[0] * m[13] * m[6] * m[11] +
+			m[4] * m[1] * m[14] * m[11] - m[0] * m[5] * m[14] * m[11] -
+			m[8] * m[5] * m[2] * m[15] + m[4] * m[9] * m[2] * m[15] +
+			m[8] * m[1] * m[6] * m[15] - m[0] * m[9] * m[6] * m[15] -
+			m[4] * m[1] * m[10] * m[15] + m[0] * m[5] * m[10] * m[15];
 	}
 };
 typedef Matrix4x4<double> Matrix4x4d;
