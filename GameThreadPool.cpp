@@ -128,7 +128,7 @@ void ThreadPool::Start()
 	catch (std::exception& ex)
 	{
 		global_stream_lock.lock();
-		std::cout << "Exception in " << __FUNCTION__ << ": " << ex.what() << std::endl;
+		std::cout << "Exception in " << __FUNCSIG__ << ": " << ex.what() << std::endl;
 		global_stream_lock.unlock();
 	}
 }

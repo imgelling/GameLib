@@ -28,17 +28,17 @@ GameLog::GameLog(std::string filename)
 
 void GameLog::Write(std::string logline)
 {
-	Write(NORMAL, logline);
+	Write(LogType::NORMAL, logline);
 }
 
 void GameLog::Error(std::string logline)
 {
-	Write(ERRORS, logline);
+	Write(LogType::ERRORS, logline);
 }
 
 void GameLog::Warning(std::string logline)
 {
-	Write(WARNING, logline);
+	Write(LogType::WARNING, logline);
 }
 
 void GameLog::Write(LogType type, std::string logline)
@@ -54,12 +54,12 @@ void GameLog::Write(LogType type, std::string logline)
 	pre = "[" + time + "] ";
 	color = "FFFFFF";
 
-	if (type == ERRORS)
+	if (type == LogType::ERRORS)
 	{
 		pre += "ERROR : ";
 		color = "FF0000";
 	}
-	else if (type == WARNING)
+	else if (type == LogType::WARNING)
 	{
 		pre += "WARNING : ";
 		color = "FFFF00";

@@ -26,7 +26,7 @@ class GameLog {
 	char buffer[256];
 	time_t rawtime;
 	struct tm timeinfo;
-    enum LogType {NORMAL, WARNING, ERRORS, NONE};
+    enum class LogType {NORMAL, WARNING, ERRORS, NONE};
     void Write(LogType type, std::string logline);
 	inline void GetTime();
 
