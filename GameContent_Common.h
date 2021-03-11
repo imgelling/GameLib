@@ -1,6 +1,6 @@
 #pragma once
 
-enum ContentType
+enum class ContentType
 {
 	TEXTURE2D,
 	SPRITEFONT,

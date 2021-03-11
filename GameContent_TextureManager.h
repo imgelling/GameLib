@@ -20,13 +20,13 @@ class GameTexture2D
 		void UnLoad() { };
 		bool isCopy;
 	public:
-		unsigned int bind;
-		int width;
-		int height;
-		float widthDiv;
-		float heightDiv;
+		unsigned int bind = 0;
+		int width = 0;
+		int height = 0;
+		float widthDiv = 0.0;
+		float heightDiv = 0.0;
 		std::string name;
-		GameTexture2D() { type = TEXTURE2D; isCopy = false; }
+		GameTexture2D() { type = ContentType::TEXTURE2D; isCopy = false; }
 		ContentType Type() { return type; }
 };
 

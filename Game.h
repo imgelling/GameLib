@@ -16,7 +16,7 @@
 #endif
 
 
-
+#include "GamePerf.h"
 #include "GameMath.h"
 #include "GameSpriteBatch.h"
 #include "GameWindow.h"
