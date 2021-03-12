@@ -10,6 +10,7 @@
 #include "GameKeyboard.h"
 #include "GameMouse.h"
 #include "GameFPS.h"
+#include "GamePerf.h"
 
 
 
@@ -85,8 +86,8 @@ class Game
 		GameKeyboard Keyboard;
 		GameMouse Mouse;
 
-		double nowart = 0;
-		double nowaut = 0;
+		//double nowart = 0;
+		//double nowaut = 0;
 
 		bool WindowChanged()
 		{
@@ -96,6 +97,8 @@ class Game
 		{
 			windowChanged = false;
 		}
+
+		PerfTimer perf;
 
     private:
         bool CreateTheWindow();

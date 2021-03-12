@@ -523,9 +523,9 @@ void Game::Run()
 	//GameFPSLock fpslock;
 	double now;
 	double nowr;
-	static double onow;
-	nowart = 0;
-	nowaut = 0;
+	//static double onow;
+	//nowart = 0;
+	//nowaut = 0;
 	ASSERT(isLogSet);
 	
 	Initialize();
@@ -537,101 +537,6 @@ void Game::Run()
 	ActualRenderTime.ResetTimer();
 	ActualUpdateTime.ResetTimer();
 	fpslock.SetFrameLock(WindowAttrib.Framelock);
-	//fpslock.Reset();
-	//while (!Quit)
-	//{
-
-	//	if (fpslock.TimeToUpdate() && !Quit)
-	//	{
-	//		Mouse.UpdateWheel(0, 0);
-	//		while (SDL_PollEvent(&e) != 0)
-	//		{
-	//			//std::string str;
-	//			switch (e.type)
-	//			{
-	//			case SDL_WINDOWEVENT:
-	//				switch (e.window.event)
-	//				{
-	//				case SDL_WINDOWEVENT_RESIZED:
-	//				case SDL_WINDOWEVENT_MAXIMIZED:
-	//					int w, h;
-	//					SDL_GetWindowSize(window, &w, &h);
-	//					gameWidth = w;
-	//					gameHeight = h;
-	//					windowChanged = true;
-	//					glViewport(0, 0, w, h);
-	//					break;
-	//				}
-	//				break;
-	//			case SDL_QUIT:
-	//				Quit = true;
-	//				break;
-	//			case SDL_MOUSEBUTTONDOWN:
-	//			case SDL_MOUSEBUTTONUP:
-	//			{
-	//				Mouse.UpdateButtonEvent(&e.button);
-	//				break;
-	//			}
-	//			case SDL_MOUSEWHEEL:
-	//			{
-	//				Mouse.UpdateWheel(e.wheel.x, e.wheel.y);
-	//				break;
-	//			}
-	//			case SDL_MOUSEMOTION:
-	//			{
-	//				Mouse.UpdateMotionEvent(&e.motion);
-	//				break;
-	//			}
-	//			case SDL_TEXTINPUT:
-	//			{
-	//				Keyboard.AppendInputText(e.text.text);
-	//				break;
-	//			}
-	//			case SDL_KEYDOWN:
-	//			{
-	//				if (Keyboard.TextInputIsOn())
-	//				{
-	//					switch (e.key.keysym.sym)
-	//					{
-	//					case SDLK_BACKSPACE:
-	//					{
-	//						Keyboard.BackspaceInputText();
-	//						break;
-	//					}
-	//					case SDLK_RETURN:
-	//					{
-	//						Keyboard.ReturnInputText();
-	//						break;
-	//					}
-	//					}
-	//					break;
-	//				}
-	//			}
-
-	//			}
-	//		}
-	//		// put into a preupdate?
-	//		Keyboard.GetState();
-
-	//		now = UpdateTime.Now().MillisecondsElapsed;
-	//		ActualUpdateTime.ResetTimer();
-	//		Update(now > MAX_FRAME_TIME ? MAX_FRAME_TIME : now);
-	//		nowaut = ActualUpdateTime.Now().MillisecondsElapsed;
-	//		// if below is commented, the frame time catches up
-	//		//if (now > MAX_FRAME_TIME) fpslock.Reset();
-
-	//		continue;
-	//	}
-
-
-
-	//	nowr = RenderTime.Now().MillisecondsElapsed;
-	//	ActualRenderTime.ResetTimer();
-	//	Render(nowr);
-	//	nowart = ActualRenderTime.Now().MillisecondsElapsed;
-	//	Present();
-	//}
-
 
 	while (!Quit)
 	{
@@ -641,9 +546,11 @@ void Game::Run()
 
 			// Render based on frame lock
 			nowr = RenderTime.Now().MillisecondsElapsed;
-			ActualRenderTime.ResetTimer();
+			//ActualRenderTime.ResetTimer();
+			perf.Start("GameWindow Render");
 			Render(nowr);
-			nowart = ActualRenderTime.Now().MillisecondsElapsed;
+			perf.Stop("GameWindow Render");
+			//nowart = ActualRenderTime.Now().MillisecondsElapsed;
 			Present();
 		}
 
@@ -718,9 +625,12 @@ void Game::Run()
 		}
 
 		now = UpdateTime.Now().MillisecondsElapsed;
+
 		ActualUpdateTime.ResetTimer();
+		perf.Start("GameWindow Update");
 		Update(now > MAX_FRAME_TIME ? MAX_FRAME_TIME : now);
-		nowaut = ActualUpdateTime.Now().MillisecondsElapsed;
+		perf.Stop("GameWindow Update");
+		//nowaut = ActualUpdateTime.Now().MillisecondsElapsed;
 
 	}
 	Shutdown();
