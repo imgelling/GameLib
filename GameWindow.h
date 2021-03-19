@@ -40,6 +40,8 @@ struct GameAttributes
 	int GL_MultiSamples;
 	int GL_Debug;
 	double Framelock;
+	unsigned int Framework;
+
 	GameAttributes()
 	{
 		GL_ContextMajor = 0;
@@ -53,6 +55,7 @@ struct GameAttributes
 		GL_MultiSamples = 0;
 		GL_Debug = 0;
 		Framelock = 0;
+		Framework = SDL_WINDOW_OPENGL; // Defaults to OpenGL
 	}
 };
 
@@ -72,8 +75,8 @@ class Game
         virtual void Initialize()=0;
         virtual void LoadContent()=0;
         virtual void Shutdown()=0;
-        virtual void Render(const double MSelapsed)=0;
-        virtual void Update(const double MSelapsed)=0;
+        virtual void Render(const double &MSelapsed)=0;
+        virtual void Update(const double &MSelapsed)=0;
 
 
 		int GameWidth() { return gameWidth; }
@@ -86,8 +89,6 @@ class Game
 		GameKeyboard Keyboard;
 		GameMouse Mouse;
 
-		//double nowart = 0;
-		//double nowaut = 0;
 
 		bool WindowChanged()
 		{
@@ -110,7 +111,6 @@ class Game
 
 		SDL_Window* window;
 		SDL_GLContext glcontext;
-		//#define MAX_FRAME_TIME  (5000.0f / 60.0f)
 		const float MAX_FRAME_TIME = 5000.0f / 60.0f;
 
 
@@ -126,9 +126,6 @@ class Game
 		GameFPSLock fpslock;
 		GameTimer RenderTime;
 		GameTimer UpdateTime;
-		GameTimer ActualRenderTime;
-		GameTimer ActualUpdateTime;
-
 		GameAttributes WindowAttrib;
 };
 

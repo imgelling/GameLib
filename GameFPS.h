@@ -45,9 +45,11 @@ public:
 	~GameFPSLock();
 	void SetFrameLock(double);
 	bool TimeToRender();
+    void Reset();
 private:
 
 	double framelock;
+    double timetowait = 0.0;
 	GameTimer rendertimer;
 };
 

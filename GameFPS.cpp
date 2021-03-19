@@ -76,31 +76,37 @@ void GameFPS::Update()
 
 GameFPSLock::GameFPSLock()
 {
+	framelock = 0;
 }
 
 GameFPSLock::~GameFPSLock()
 {
 }
 
+void GameFPSLock::Reset()
+{
+	rendertimer.ResetTimer();
+}
+
 
 void GameFPSLock::SetFrameLock(double fl)
 {
 	framelock = fl;
+	Reset();
 }
 
 bool GameFPSLock::TimeToRender()
 {
 	if (framelock == 0.0)
 		return true;
-	double renderPerSecond = 1000.0 / framelock;// 16.666;// 1000.0 / 60.0;// +0.0025;
-	static double timetowait = 0;//1.0f/60.0f;
-	timetowait += rendertimer.Now().MillisecondsElapsed;
+	double renderPerSecond = (1000.0 / framelock);
+	double now = rendertimer.Now().MillisecondsElapsed;
 	rendertimer.ResetTimer();
-	if (timetowait >= (renderPerSecond))// -0.00025))
+	
+	timetowait += now;
+	if (timetowait >= (renderPerSecond))
 	{
-		
-		timetowait = timetowait - (renderPerSecond);  
-
+		timetowait -= (renderPerSecond);
 		return true;
 	}
 	else 

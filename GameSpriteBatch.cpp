@@ -94,6 +94,7 @@ void GameSpriteBatch::Setup(Recti RenderViewPort)
 	{
 		glDeleteBuffers(1,&vertexId);
 		glDeleteBuffers(1,&indexId);
+		glDeleteVertexArrays(1, &VertexArrayID); // added to see if memory leak on fullscreen
 	}
 	
 	glGenVertexArrays(1, &VertexArrayID);
@@ -108,7 +109,7 @@ void GameSpriteBatch::Setup(Recti RenderViewPort)
 	glBufferData(GL_ARRAY_BUFFER,
 					vertexBufferSize,
 					NULL,
-					GL_DYNAMIC_COPY);
+					GL_STREAM_DRAW);// GL_DYNAMIC_COPY);  // Fixed nvidia issue
 
 	// Indices will be the exact same every time.
 	// Create the buffer and fill it.
@@ -142,6 +143,7 @@ void GameSpriteBatch::Setup(Recti RenderViewPort)
 		indexBufferSize,
 		clientIndex,
 		GL_DYNAMIC_COPY);
+
 
 	// Free client memory
 	if (clientIndex != NULL)

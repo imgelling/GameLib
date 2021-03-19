@@ -9,10 +9,8 @@ class PerfTimer
 {
 private:
     // Holds relavent data per function timed
-    class FunctionToTime
+    struct FunctionToTime
     {
-    public:
-        void(*f) = NULL;
         std::string name;
         double time = 0.0;
         unsigned int ticks = 0;
@@ -24,7 +22,7 @@ private:
     // Holds a FunctionToTime keyed to a string specified by user
     std::unordered_map <std::string, FunctionToTime> timedfuncs;
 public:
-    // Returns number of times the function was timed
+    // Returns number of times the function was timed, -1 if not found
     unsigned int Ticks(std::string name) 
     { 
         mute.lock();
@@ -37,11 +35,12 @@ public:
         {
             // Output to a log or something
             //std::cout << __func__ << ": \"" << name << "\" is not found." << "\n";
+            ret = -1;
         }
         mute.unlock();
         return ret;
     }
-    // Returns the nanoseconds the function took on the last call
+    // Returns the nanoseconds the function took on the last call, -1 if not found
     double LastRun(std::string name) 
     { 
         mute.lock();
@@ -54,11 +53,12 @@ public:
         {
             // Output to a log or something
             //std::cout << __func__ << ": \"" << name << "\" is not found." << "\n";
+            ret = -1.0;
         }
         mute.unlock();
         return ret;
     }
-    // Returns the total nanoseconds the function ran over all the calls
+    // Returns the total nanoseconds the function ran over all the calls, -1 if not found
     double Cumulative(std::string name)
     {
         mute.lock();
@@ -71,10 +71,11 @@ public:
         {
             // Output to a log or something
             //std::cout << __func__ << ": \"" << name << "\" is not found." << "\n";
+            ret = -1.0;
         }
         mute.unlock();
     }
-    // Returns the average nanoseconds the function ran over all the calls
+    // Returns the average nanoseconds the function ran over all the calls, -1 if not found
     double Average(std::string name)
     {
         mute.lock();
@@ -87,8 +88,10 @@ public:
         {
             // Output to a log or something
             //std::cout << __func__ << ": \"" << name << "\" is not found." << "\n";
+            ret = -1.0;
         }
         mute.unlock();
+        return ret;
     }
     // Returns an unmodifiable container of timed functions
     const std::unordered_map <std::string, FunctionToTime>& TimedFunctions()
@@ -98,7 +101,6 @@ public:
     // Start timing
     void Start(std::string name)
     {
-        // changed name to fptr
         FunctionToTime t;
         mute.lock();
         timedfuncs.try_emplace(name, t);
@@ -110,7 +112,6 @@ public:
     // Stop timing
     void Stop(std::string name)
     {
-        // changed name to fptr
 #define duration(a) std::chrono::duration_cast<std::chrono::nanoseconds>(a).count()
 #define timeNow() std::chrono::high_resolution_clock::now()
         mute.lock();

@@ -12,20 +12,14 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_opengl.h>
-//#include <SDL2/SDL_mixer.h>
 #else
 #include <gl\glew.h>
 #include <SDL.h>
-//#include <SDL_image.h>
-//#include <SDL_opengl.h>
-//#include <SDL_mixer.h>
 #endif
 
 
 #include "GameWindow.h"
 #include "GameDebug.h"
-//#include <string>
-//#include <sstream>
 
 static void GLAPIENTRY openglCallbackFunction(GLenum source,
 	GLenum type,
@@ -148,19 +142,10 @@ Game::Game()
 	windowChanged = false;
 	framelock = 0;
 
-	//if (log)
-	//Logger = log;// new Log("log.html");
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
 		Logger->Error("Could not initialize SDL");
 	}
-//#ifdef __linux__
-//
-//#else
-////	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) < 0) {
-////		Logger->Error("Could not initialize SDL_MIXER");
-//	}
-//#endif
 
 }
 
@@ -235,30 +220,6 @@ void Game::LogGraphicsCard()
 	{
 		str << "Can not retrieve video RAM on AMD.";
 		Logger->Write(str.str());
-		// This works but throws a GL error so commenting it out
-		// Shows free memory
-		//glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, &cur_avail_mem_kb[0]);
-		//total_mem_kb[0] = (cur_avail_mem_kb[0] / 1024 / 1024 + 1) * 1024;
-		//str << "Cannot retrieve AMD VRAM size and total is estimated.";
-		//Logger->Write(str.str());
-		//str.str("");
-		//str << "GPU total memory is " << total_mem_kb[0] << "MB and has " << cur_avail_mem_kb[0] / 1024.0f << "MB available.";
-		//Logger->Write(str.str());
-		
-
-		// [2][3] shows shared gpu ram, add [0][1] to get all ram+vram
-		//[1] seems to be actually free
-		//glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, &cur_avail_mem_kb[0]);
-		//for (int i = 0; i < 4; i++)
-		//{
-		//	// Shows free memory
-		//	total_mem_kb[0] = cur_avail_mem_kb[i] / 1024 / 1024 + 1;
-		//	str << "GPU total meme is" << total_mem_kb[0] << " and ";
-		//	str << "GPU available texture memory is " << cur_avail_mem_kb[i] / 1024.0f << "MB.";
-		//	Logger->Write(str.str());
-		//	str.str("");
-		//}
-
 	}
 }
 
@@ -428,7 +389,14 @@ bool Game::CreateTheWindow()
 		else
 			flags |= SDL_WINDOW_RESIZABLE;
 	}
-	flags |= SDL_WINDOW_OPENGL;
+	if (WindowAttrib.Framework == SDL_WINDOW_OPENGL)
+	{
+		flags |= SDL_WINDOW_OPENGL;
+	}
+	else if (WindowAttrib.Framework == SDL_WINDOW_VULKAN)
+	{
+		flags |= SDL_WINDOW_VULKAN;
+	}
 
 
 
@@ -441,22 +409,24 @@ bool Game::CreateTheWindow()
 		Logger->Error(str.str().c_str());
 		return false;
 	}
-	glcontext = SDL_GL_CreateContext(window);
-
-	glewExperimental = GL_TRUE;
-	GLenum err = glewInit();
-	if (err != GLEW_OK)
+	if (WindowAttrib.Framework == SDL_WINDOW_OPENGL)
 	{
-		Logger->Error("Could not initialize GLEW");
-	}
+		glcontext = SDL_GL_CreateContext(window);
+		glewExperimental = GL_TRUE;
+		GLenum err = glewInit();
+		if (err != GLEW_OK)
+		{
+			Logger->Error("Could not initialize GLEW");
+		}
 
-	if (WindowAttrib.GL_Debug)
-	{
-		glEnable(GL_DEBUG_OUTPUT);
-		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+		if (WindowAttrib.GL_Debug)
+		{
+			glEnable(GL_DEBUG_OUTPUT);
+			glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 
-		glDebugMessageCallback(openglCallbackFunction, nullptr);
-		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+			glDebugMessageCallback(openglCallbackFunction, nullptr);
+			glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+		}
 	}
 	Mouse.SetWindow(window,gameWidth,gameHeight);
 
@@ -520,37 +490,25 @@ void Game::SetFramelock(double fl)
 void Game::Run()
 {
 	SDL_Event e;
-	//GameFPSLock fpslock;
 	double now;
-	double nowr;
-	//static double onow;
-	//nowart = 0;
-	//nowaut = 0;
 	ASSERT(isLogSet);
 	
 	Initialize();
     if (!CreateTheWindow()) return;
     LoadContent();
-
+	fpslock.SetFrameLock(WindowAttrib.Framelock);
 	UpdateTime.ResetTimer();
 	RenderTime.ResetTimer();
-	ActualRenderTime.ResetTimer();
-	ActualUpdateTime.ResetTimer();
-	fpslock.SetFrameLock(WindowAttrib.Framelock);
+
 
 	while (!Quit)
 	{
-		
 		if (fpslock.TimeToRender() && !Quit)
 		{
-
-			// Render based on frame lock
-			nowr = RenderTime.Now().MillisecondsElapsed;
-			//ActualRenderTime.ResetTimer();
+			now = RenderTime.Now().MillisecondsElapsed;
 			perf.Start("GameWindow Render");
-			Render(nowr);
+			Render(now);
 			perf.Stop("GameWindow Render");
-			//nowart = ActualRenderTime.Now().MillisecondsElapsed;
 			Present();
 		}
 
@@ -559,7 +517,6 @@ void Game::Run()
 		while (SDL_PollEvent(&e) != 0)
 		{
 
-			//std::string str;
 			switch (e.type)
 			{
 			case SDL_WINDOWEVENT:
@@ -625,19 +582,9 @@ void Game::Run()
 		}
 
 		now = UpdateTime.Now().MillisecondsElapsed;
-
-		ActualUpdateTime.ResetTimer();
 		perf.Start("GameWindow Update");
-		Update(now > MAX_FRAME_TIME ? MAX_FRAME_TIME : now);
+		Update(now);// > MAX_FRAME_TIME ? MAX_FRAME_TIME : now);
 		perf.Stop("GameWindow Update");
-		//nowaut = ActualUpdateTime.Now().MillisecondsElapsed;
-
 	}
 	Shutdown();
 }
-
-
-
-
-
-
