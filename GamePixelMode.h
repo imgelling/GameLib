@@ -19,7 +19,10 @@ public:
 	void GetPal(Color256 *);
 	Color256 GetPalLoc(int);
 	void SetPalLoc(int, Color256);
+	// Clears the buffer to a color, slower
 	void Clear(unsigned char);
+	// Clears the buffer to 0, MUCH FASTER
+	void Clear();
 	void Flip(GameSpriteBatch *, bool);
 	void LoadPalette();
 	GamePixelMode();

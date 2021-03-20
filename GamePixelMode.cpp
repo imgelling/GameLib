@@ -180,9 +180,31 @@ void GamePixelMode::UpdateWindowBuffer()
 	glBindTexture(GL_TEXTURE_2D, 0);
 	return;
 }
+
+
+inline void memset64(void* buffer, int value, size_t count)
+{
+	const size_t m = count / 8;
+	int* p = (int*)buffer;
+	for (size_t i = 0; i < m; ++i, ++p)
+		*p = value;
+}
 void GamePixelMode::Clear(unsigned char color)
 {
+	std::fill_n(Video, width*height, pal[color].PackedColor);
+	// memset is >2x the speed of fill_n but only does black
+	//memset((void*)Video, 0, (size_t)width * (size_t)height * sizeof(GLuint));
+
+	//for (int i = 0; i < width * height; i++)    // slow as snot
+	//	Video[i] = pal[color].PackedColor;
+}
+
+void GamePixelMode::Clear()
+{
 	//std::fill_n(Video, width*height, pal[color].PackedColor);
-	// memset is >2x the speed of fill_n
-	memset((void *)Video, pal[color].PackedColor, (size_t)width * (size_t)height * sizeof(GLuint));
+	// memset is >2x the speed of fill_n but only does black
+	memset((void*)Video, 0, (size_t)width * (size_t)height * sizeof(GLuint));
+
+	//for (int i = 0; i < width * height; i++)    // slow as snot
+	//	Video[i] = pal[color].PackedColor;
 }

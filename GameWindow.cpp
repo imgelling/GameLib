@@ -4,7 +4,7 @@
 
 // Gets rid of console window in Release
 #ifndef _DEBUG
-#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+//#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 #endif
 
 #ifdef __linux__
@@ -117,7 +117,6 @@ static void GLAPIENTRY openglCallbackFunction(GLenum source,
 		printf("Notification");
 		break;
 	}
-	//ASSERT(false);
 	printf("\n\n");
 	return;
 }
