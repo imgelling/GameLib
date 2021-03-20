@@ -22,6 +22,10 @@ private:
     // Holds a FunctionToTime keyed to a string specified by user
     std::unordered_map <std::string, FunctionToTime> timedfuncs;
 public:
+    ~PerfTimer()
+    {
+        timedfuncs.clear();
+    }
     // Returns number of times the function was timed, -1 if not found
     unsigned int Ticks(std::string name) 
     { 
@@ -33,8 +37,6 @@ public:
         }
         catch (...)
         {
-            // Output to a log or something
-            //std::cout << __func__ << ": \"" << name << "\" is not found." << "\n";
             ret = -1;
         }
         mute.unlock();
@@ -51,8 +53,6 @@ public:
         }
         catch (...)
         {
-            // Output to a log or something
-            //std::cout << __func__ << ": \"" << name << "\" is not found." << "\n";
             ret = -1.0;
         }
         mute.unlock();
@@ -69,8 +69,6 @@ public:
         }
         catch (...)
         {
-            // Output to a log or something
-            //std::cout << __func__ << ": \"" << name << "\" is not found." << "\n";
             ret = -1.0;
         }
         mute.unlock();
@@ -86,8 +84,6 @@ public:
         }
         catch (...)
         {
-            // Output to a log or something
-            //std::cout << __func__ << ": \"" << name << "\" is not found." << "\n";
             ret = -1.0;
         }
         mute.unlock();

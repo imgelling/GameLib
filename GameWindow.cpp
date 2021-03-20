@@ -163,7 +163,6 @@ Game::~Game()
 	{
 		Keyboard.EndInputText();
 	}
-
 	//Destroy window
 	SDL_GL_DeleteContext(glcontext);
 	SDL_DestroyWindow(window);
@@ -499,15 +498,14 @@ void Game::Run()
 	fpslock.SetFrameLock(WindowAttrib.Framelock);
 	UpdateTime.ResetTimer();
 	RenderTime.ResetTimer();
-
+	fpslock.Reset();
 
 	while (!Quit)
 	{
-		if (fpslock.TimeToRender() && !Quit)
+		if (fpslock.TimeToRender())
 		{
-			now = RenderTime.Now().MillisecondsElapsed;
 			perf.Start("GameWindow Render");
-			Render(now);
+			Render(RenderTime.Now().MillisecondsElapsed);
 			perf.Stop("GameWindow Render");
 			Present();
 		}
@@ -583,7 +581,7 @@ void Game::Run()
 
 		now = UpdateTime.Now().MillisecondsElapsed;
 		perf.Start("GameWindow Update");
-		Update(now);// > MAX_FRAME_TIME ? MAX_FRAME_TIME : now);
+		Update(now > MAX_FRAME_TIME ? MAX_FRAME_TIME : now);
 		perf.Stop("GameWindow Update");
 	}
 	Shutdown();

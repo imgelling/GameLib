@@ -98,6 +98,18 @@ public:
 	Matrix4x4 operator* (const Matrix4x4& rhs)
 	{
 		Matrix4x4<T> ret;
+		//// column major?
+		//for (int i = 0; i < 4; i++) // row
+		//{
+		//	for (int j = 0; j < 4; j++) // col
+		//	{
+		//		ret.m[j * 4 + i] = 0;  // zero out location in return
+		//		for (int k = 0; k < 4; k++)
+		//		{
+		//			ret.m[j * 4 + i] += m[k * 4 + i] * rhs.m[j * 4 + k];
+		//		}
+		//	}
+		//}
 		// column major?
 		for (int i = 0; i < 4; i++) // row
 		{
@@ -386,7 +398,6 @@ public:
 		z = z / scalar;
 		return *this;
 	}
-	//[x×a+y×e+z×i+4×m, x×b+y×f+z×j+4×n, x×c+y×g+z×k+4×o, x×d+y×h+z×l+4×p] 
 	Vector3 operator* (const Matrix4x4<T>& mat)
 	{
 		Vector3<T> ret;
