@@ -98,18 +98,18 @@ void Color256::Set(unsigned char r2, unsigned char g2, unsigned char b2)
 	g = (unsigned char)(((float)g2 * Convert64toF)*255.0f);
 	b = (unsigned char)(((float)b2 * Convert64toF)*255.0f);
 	PackedColor = 0;
-	unsigned int cR = r << 16;
-	unsigned int cG = g << 8;
-	unsigned int cB = b;
-	unsigned int cA = 255 << 24;
-	PackedColor =  ((cA) | (cR) | (cG) | (cB));
-	//PackedColor =  ((cA) | (cB) | (cG) | (cR));
-	//unsigned int cR = r;// << 16;
+	//unsigned int cR = r << 16;
 	//unsigned int cG = g << 8;
-	//unsigned int cB = b << 16;
+	//unsigned int cB = b;
 	//unsigned int cA = 255 << 24;
-	//PackedColor = ((cA) | (cR) | (cG) | (cB));
-	//PackedColor =  ((cA) | (cB) | (cG) | (cR));
+	//PackedColor =  ((cA) | (cR) | (cG) | (cB));
+    // Packing for GL_RGBA
+    unsigned int cR = r << 0;// 255 << 24;
+    unsigned int cG = g << 8;
+    unsigned int cB = b << 16;
+    unsigned int cA = 255 << 24;
+    PackedColor = ((cA) | (cR) | (cG) | (cB));
+
 }
 
 

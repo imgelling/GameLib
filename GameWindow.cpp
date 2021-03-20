@@ -220,6 +220,12 @@ void Game::LogGraphicsCard()
 		str << "Can not retrieve video RAM on AMD.";
 		Logger->Write(str.str());
 	}
+	GLint pixelFormat, pixelType;
+	glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_TEXTURE_IMAGE_FORMAT, 1, &pixelFormat);
+	glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_TEXTURE_IMAGE_TYPE, 1, &pixelType);
+	str.str("");
+	str << "Internal texture format is " << pixelFormat << " and type is " << pixelType;
+	Logger->Write(str.str());
 }
 
 void Game::LogOpenGLInfo()

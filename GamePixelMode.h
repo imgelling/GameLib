@@ -28,7 +28,7 @@ public:
 	Color256 pal[256];
 private:
 
-	GameTexture2D WindowBuffer;
+	GameTexture2D WindowBuffer[2];
 	//GLuint pbo[2];
 	int current;
 	int width;
