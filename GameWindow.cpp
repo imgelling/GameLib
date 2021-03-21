@@ -1,23 +1,7 @@
 // INCLUDES ////////////////////////////////////////////////////////////////////
-
-
-
-// Gets rid of console window in Release
-#ifndef _DEBUG
-//#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
-#endif
-
-#ifdef __linux__
-#include "GL/glew.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_opengl.h>
-#else
 #include <gl\glew.h>
 #include <SDL.h>
-#endif
-
-
+#include <string>
 #include "GameWindow.h"
 #include "GameDebug.h"
 
@@ -190,10 +174,10 @@ void Game::LogGraphicsCard()
 	// Graphics card info
 	str << "Renderer is " << glGetString(GL_RENDERER) << ".";
 	Logger->Write(str.str());
-	str.str("");
+	str.str(std::string());
 	str << glGetString(GL_VENDOR);
 	std::string test = str.str();
-	str.str("");
+	str.str(std::string());
 	GLint total_mem_kb[4] = { 0 };
 	GLint cur_avail_mem_kb[4] = { 0 };
 	if (test.find("NVIDIA") != std::string::npos)
@@ -210,7 +194,7 @@ void Game::LogGraphicsCard()
 
 		str << "GPU total memory is " << total_mem_kb[0] / 1024.0f << "MB and has " << cur_avail_mem_kb[0] / 1024.0f << "MB available.";
 		Logger->Write(str.str());
-		str.str("");
+		str.str(std::string());
 #undef GL_GPU_MEM_INFO_TOTAL_AVAILABLE_MEM_NVX
 #undef GL_GPU_MEM_INFO_CURRENT_AVAILABLE_MEM_NVX 
 	}
@@ -222,7 +206,7 @@ void Game::LogGraphicsCard()
 	GLint pixelFormat, pixelType;
 	glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_TEXTURE_IMAGE_FORMAT, 1, &pixelFormat);
 	glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_TEXTURE_IMAGE_TYPE, 1, &pixelType);
-	str.str("");
+	str.str(std::string());
 	str << "Internal texture format is " << pixelFormat << " and type is " << pixelType;
 	Logger->Write(str.str());
 }
@@ -240,12 +224,12 @@ void Game::LogOpenGLInfo()
 		" detected.");
 	str << "OpenGL Context is version " << glMajor << "." << glMinor << ".";
 	Logger->Write(str.str());
-	str.str("");
+	str.str(std::string());
 	str << "GLSL version ";
 	str << glGetString(GL_SHADING_LANGUAGE_VERSION);
 	str << " detected.";
 	Logger->Write(str.str());
-	str.str("");
+	str.str(std::string());
 
 	int MSbuff, MSsamp;
 	SDL_GL_GetAttribute(SDL_GL_MULTISAMPLEBUFFERS, &MSbuff);
@@ -307,13 +291,13 @@ void Game::LogWindowInfo(bool verbose)
 	}
 
 	Logger->Write(str.str());
-	str.str("");
+	str.str(std::string());
 	if (verbose)
 	{
 		str << "Backbuffer is " << back << "bits"
 			<< " with format " << br << bg << bb << ba;
 		Logger->Write(str.str());
-		str.str("");
+		str.str(std::string());
 		str << "Depthbuffer is " << depth << "bits.";
 		Logger->Write(str.str());
 	}
@@ -329,7 +313,7 @@ void Game::LogSDLInfo()
 	SDL_GetVersion(&linked);
 	sdl << "Compiled against SDL version " << (int)compiled.major << "." << (int)compiled.minor << "." << (int)compiled.patch << ".";
 	Logger->Write(sdl.str());
-	sdl.str("");
+	sdl.str(std::string());
 	sdl << "Linked against SDL version " << (int)linked.major << "." << (int)linked.minor << "." << (int)linked.patch << ".";
 	Logger->Write(sdl.str());
 }
@@ -407,7 +391,7 @@ bool Game::CreateTheWindow()
 	window = SDL_CreateWindow(WindowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gameWidth, gameHeight, flags);
 	if (window == NULL)
 	{
-		str.str("");
+		str.str(std::string());
 		str << "Could not create a window. SDL Error: " << SDL_GetError() << std::endl;
 
 		Logger->Error(str.str().c_str());

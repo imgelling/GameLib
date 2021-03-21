@@ -1,5 +1,6 @@
 // INCLUDES ////////////////////////////////////////////////////////////////////
 #include "GameFPS.h"
+#include <string>
 
 
 
@@ -21,14 +22,14 @@ void GameFPS::Reset()
 	fps = 0;
 	mspf = 0;
 	time = 0;
-	text.str("");
+	text.str(std::string());
 }
 
 std::string GameFPS::ToString()
 {
     text << fps;
     std::string str = text.str();
-    text.str("");
+    text.str(std::string());
     return str;
 }
 
@@ -51,7 +52,7 @@ std::string GameFPS::MsPFs()
 {
     text << (int)mspf;
     std::string str = text.str();
-    text.str("");
+    text.str(std::string());
     return str;
 }
 
