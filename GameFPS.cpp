@@ -3,7 +3,6 @@
 #include <string>
 
 
-
 // METHODS /////////////////////////////////////////////////////////////////////
 GameFPS::GameFPS()
 {
@@ -95,24 +94,24 @@ void GameFPSLock::SetFrameLock(double fl)
 	framelock = fl;
 	Reset();
 }
-
+#include <iostream>
 bool GameFPSLock::TimeToRender()
 {
 	if (framelock == 0.0)
-		return true;
-	double renderPerSecond = (1000.0 / framelock);
-	double now = rendertimer.Now().MillisecondsElapsed;
-	rendertimer.ResetTimer();
-	
-	timetowait += now;
-	if (timetowait >= (renderPerSecond))
 	{
-		timetowait -= (renderPerSecond);
+		return true;
+	}
+	double msPerRender = (1000.0 / framelock);
+	double now = rendertimer.Now().MillisecondsElapsed;
+	timetowait += now;
+	rendertimer.ResetTimer();
+	if (timetowait >= (msPerRender))
+	{
+		timetowait -= (msPerRender);
 		return true;
 	}
 	else 
 	{
-			return false;
+		return false;
 	}
 }
-

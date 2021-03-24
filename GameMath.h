@@ -135,7 +135,6 @@ public:
 		}
 		m[0] = m[5] = m[10] = m[15] = (T)1.0;
 	}
-	// Translate -> Rotate -> Scale
 	void SetRotationX(const T &rot)
 	{
 		m[5] = cos(rot);
@@ -401,10 +400,17 @@ public:
 	Vector3 operator* (const Matrix4x4<T>& mat)
 	{
 		Vector3<T> ret;
-		ret.x = (x * mat[0] + y * mat[4] + z * mat[8] + w * mat[12]);
-		ret.y = (x * mat[1] + y * mat[5] + z * mat[9] + w * mat[13]);
-		ret.z = (x * mat[2] + y * mat[6] + z * mat[10] + w * mat[14]);
-		ret.w = (x * mat[3] + y * mat[7] + z * mat[11] + w * mat[15]);
+		ret.x = (x * mat[0] + y * mat[4] + z * mat[8] + mat[12]);
+		ret.y = (x * mat[1] + y * mat[5] + z * mat[9] + mat[13]);
+		ret.z = (x * mat[2] + y * mat[6] + z * mat[10] + mat[14]);
+		ret.w = (x * mat[3] + y * mat[7] + z * mat[11] + mat[15]);
+		if (ret.w != 0)
+		{
+			ret.x /= ret.w;
+			ret.y /= ret.w;
+			ret.z /= ret.w;
+			ret.w /= ret.w;
+		}
 		return ret;
 	}
 	Vector3& operator*= (const Matrix4x4<T>& mat)
