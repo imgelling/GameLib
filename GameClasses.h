@@ -8,7 +8,7 @@
 
 
 // DECLARATIONS ////////////////////////////////////////////////////////////////
-struct Color
+class Color
 {
     public:
         float r;
@@ -31,7 +31,7 @@ struct Color
 		float Convert64toF = (1.0f / 63.0f);
 };
 
-struct Color256
+class Color256
 {
 	public:
 		unsigned char r = 0;
