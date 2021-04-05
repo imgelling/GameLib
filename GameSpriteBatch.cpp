@@ -418,6 +418,35 @@ void GameSpriteBatch::Draw(GameTexture2D tex, Point2i dest, Color color)
 		color);
 }
 
+void GameSpriteBatch::DrawStringRight(GameSpriteFont font, std::string Str, int y, Color color)
+{
+	int CurX = renderViewPort.right - font.Length(Str);
+	int CurY = y;
+	int Width, Height;
+	Recti src, dest;
+	short ch;
+	
+	for (unsigned int i = 0; i < Str.size(); ++i)
+	{
+		ch = Str[i];
+		Width = font.set.chars[ch].width;
+		Height = font.set.chars[ch].height;
+
+		src.left = font.set.chars[ch].x;
+		src.top = font.set.chars[ch].y;
+		src.right = src.left + Width;
+		src.bottom = (src.top + Height);
+
+		dest.left = CurX + font.set.chars[ch].xOffset;
+		dest.top = CurY + font.set.chars[ch].yOffset;
+		dest.right = Width + dest.left;
+		dest.bottom = Height + dest.top;
+
+		Draw(font.Texture(), dest, src, color);
+
+		CurX += font.set.chars[ch].xAdvance;
+	}
+}
 
 void GameSpriteBatch::DrawString(GameSpriteFont font, std::string Str, int x, int y, Color color)
 {

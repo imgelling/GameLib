@@ -37,6 +37,7 @@ class GameSpriteBatch {
         void Draw(GameTexture2D tex, Recti dest, Recti src, Color color);
 		void Draw(GameTexture2D tex, Recti dest, Recti src, Point2i origin, Color color);
 		void Draw(GameTexture2D tex, Recti dest, Recti src, Point2i origin, float rotation, Color color);
+		void DrawStringRight(GameSpriteFont font, std::string Str, int y, Color color);
 		void DrawString(GameSpriteFont font, std::string Str, int x, int y, Color color);
 
 

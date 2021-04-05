@@ -495,8 +495,8 @@ void Game::Run()
 		{
 			perf.Start("GameWindow Render");
 			Render(RenderTime.Now().MillisecondsElapsed);
-			perf.Stop("GameWindow Render");
 			Present();
+			perf.Stop("GameWindow Render");
 		}
 
 
