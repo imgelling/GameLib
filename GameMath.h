@@ -278,10 +278,10 @@ public:
 	}
 	T Mag2() { return ((x * x) + (y * y)); }
 	T Mag() { return sqrt((x * x) + (y * y)); }
-	Vector2 Normalize()
+	void Normalize()
 	{
-		Vector2<T> c(x, y);
-		return c / Mag();
+		*this /= Mag();
+		
 	}
 	double Dot(const Vector2<T>& rhs)
 	{
@@ -359,7 +359,6 @@ public:
 	}
 	Vector3& operator-= (const Vector3& rhs)
 	{
-		//Vector3<T> c;
 		x = x - rhs.x;
 		y = y - rhs.y;
 		z = z - rhs.z;
@@ -431,10 +430,10 @@ public:
 	double Dot(const Vector3<T>& rhs) {
 		return (x * rhs.x) + (y * rhs.y) + (z * rhs.z);
 	}
-	Vector3 Normalize()
+	void Normalize()
 	{
-		Vector3<T> c(x, y, z);
-		return c / Mag();
+		double l = Mag();
+		*this /= l;
 	}
 	Vector3 Cross(const Vector3& rhs)
 	{
