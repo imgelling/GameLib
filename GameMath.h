@@ -352,9 +352,9 @@ public:
 	Vector3 operator- (const Vector3& rhs)
 	{
 		Vector3<T> c;
-		c.x = x + rhs.x;
-		c.y = y + rhs.y;
-		c.z = z + rhs.z;
+		c.x = x - rhs.x;
+		c.y = y - rhs.y;
+		c.z = z - rhs.z;
 		return c;
 	}
 	Vector3& operator-= (const Vector3& rhs)
@@ -441,7 +441,7 @@ public:
 		Vector3<T> t;
 		t.x = (y * rhs.z) - (z * rhs.y);
 		t.y = (z * rhs.x) - (x * rhs.z);
-		t.z = (x * rhs.y) - (rhs.y * x);
+		t.z = (x * rhs.y) - (y * rhs.x);
 		return t;
 	}
 	Vector3 Lerp(const Vector3<T>& second, const T by)
