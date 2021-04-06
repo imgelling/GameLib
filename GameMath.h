@@ -156,7 +156,7 @@ public:
 		m[4] = -sin(rot);
 		m[5] = cos(rot);
 	}
-	void SetTraslation(const T& x, const T& y, const T& z)
+	void SetTranslation(const T& x, const T& y, const T& z)
 	{
 		m[12] = x;
 		m[13] = y;
@@ -407,7 +407,6 @@ public:
 			ret.x /= w;
 			ret.y /= w;
 			ret.z /= w;
-			//ret.w /= ret.w;
 		}
 		return ret;
 	}
