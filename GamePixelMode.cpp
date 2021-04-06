@@ -156,8 +156,7 @@ void GamePixelMode::UpdateWindowBuffer()
 	current++;
 	if (current > 1) current = 0;
 
-	//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, (GLvoid *)Video); //old
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, (GLvoid *)Video); //new
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, (GLvoid *)Video); 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	return;
 }

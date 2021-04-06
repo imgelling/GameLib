@@ -491,6 +491,7 @@ void Game::Run()
 
 	while (!Quit)
 	{
+
 		if (fpslock.TimeToRender())
 		{
 			perf.Start("GameWindow Render");

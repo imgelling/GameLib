@@ -26,7 +26,7 @@ GameSpriteBatch::GameSpriteBatch()
 	setUp = false;
 
 	clientVertex = NULL;
-    clientVertex=new Vertex[vertexBufferCount];
+	clientVertex = new Vertex[vertexBufferCount];
 
 
 	oMat[0][0] = 1.0f;
@@ -40,11 +40,11 @@ GameSpriteBatch::GameSpriteBatch()
 GameSpriteBatch::~GameSpriteBatch()
 {
 	// Free client mem
-    if (clientVertex!=NULL)
-    {
-        delete[] clientVertex;
-        clientVertex = NULL;
-    }
+	if (clientVertex!=NULL)
+	{
+		delete[] clientVertex;
+		clientVertex = NULL;
+	}
 
 	// Free video mem
 	if (vertexId)
@@ -94,7 +94,9 @@ void GameSpriteBatch::Setup(Recti RenderViewPort)
 	{
 		glDeleteBuffers(1,&vertexId);
 		glDeleteBuffers(1,&indexId);
-		glDeleteVertexArrays(1, &VertexArrayID); // added to see if memory leak on fullscreen
+		glDeleteVertexArrays(1, &VertexArrayID); 
+		shader.UnLoad();
+		setUp = false;
 	}
 	
 	glGenVertexArrays(1, &VertexArrayID);
@@ -163,9 +165,6 @@ void GameSpriteBatch::Setup(Recti RenderViewPort)
 	texture_location = glGetUniformLocation(shader.Id(), "tex");
 	ortho_location = glGetUniformLocation(shader.Id(), "ortho");
 
-
-
-
 	setUp = true;
 }
 
@@ -174,7 +173,6 @@ void GameSpriteBatch::Begin()
 	vertexBufferUsed = 0;
 	lastTextureId = 0;
 
-	// needs to be fixed send matrix to shader
 	Enable2D();
 	shader.Bind();
 	glEnableVertexAttribArray(0);
@@ -208,42 +206,26 @@ void GameSpriteBatch::Begin()
 		(const GLvoid*)(4*sizeof(GL_FLOAT))
 		);
 
-	// Tell shader what texture to use
-	//glActiveTexture(GL_TEXTURE0);
-	//int texture_location = glGetUniformLocation(shader.Id(),"tex");
 	glUniform1i(texture_location,0);
-	//int ortho_location = glGetUniformLocation(shader.Id(), "ortho");
 	glUniformMatrix4fv(ortho_location, 1, GL_FALSE, &oMat[0][0]);
 
 }
 
 void GameSpriteBatch::Render()
 {
-
-	// kills amd performance
-	//glBufferData(GL_ARRAY_BUFFER, vertexBufferSize, NULL, GL_STREAM_DRAW);
-
-
-	// old way, tiny, tiny bit slower
-	//GLvoid* buff = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-
-	// GOES MUCH FASTER with invalidate buffer bit
+	// Send vertex data to card
 	GLvoid* buff = glMapBufferRange(GL_ARRAY_BUFFER, 0, vertexBufferUsed * sizeof(Vertex), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
 	memcpy(buff, clientVertex, vertexBufferUsed*sizeof(Vertex));
 	glUnmapBuffer(GL_ARRAY_BUFFER);
-
 	
 	glBindTexture(GL_TEXTURE_2D, lastTextureId);
 
-	// Draw it
 	glDrawRangeElements(GL_TRIANGLES,
 		0,
 		vertexBufferUsed,
 		vertexBufferUsed+(vertexBufferUsed>>1),
 		GL_UNSIGNED_SHORT,
 		0);
-
-	//currentPBO = 1 - currentPBO;
 }
 
 void GameSpriteBatch::End()
@@ -287,7 +269,6 @@ void GameSpriteBatch::Draw(GameTexture2D tex, Recti dest, Recti src, Color color
 		if (vertexBufferUsed > 0) Render();
 		vertexBufferUsed = 0;
 		lastTextureId = tex.bind;
-
 	}
 
 	if (vertexBufferUsed + 4 >= vertexBufferCount)

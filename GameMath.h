@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 
-#define DEG2RAD(x)  x*0.0174532925f
+//#define DEG2RAD(x)  x*0.0174532925f
 
 // Point 
 template <typename T>
@@ -152,8 +152,8 @@ public:
 	void SetRotationZ(const T& rot)
 	{
 		m[0] = cos(rot);
-		m[1] = -sin(rot);
-		m[4] = sin(rot);
+		m[1] = sin(rot);
+		m[4] = -sin(rot);
 		m[5] = cos(rot);
 	}
 	void SetTraslation(const T& x, const T& y, const T& z)
@@ -326,14 +326,12 @@ public:
 	T x;
 	T y;
 	T z;
-	T w;
-	Vector3() : x((T)0.0), y((T)0.0), z((T)0.0), w((T)1.0) {}
+	Vector3() : x((T)0.0), y((T)0.0), z((T)0.0) {}
 	Vector3(const T& x, const T& y, const T& z)
 	{
 		this->x = x;
 		this->y = y;
 		this->z = z;
-		w = (T)1.0;
 	}
 	Vector3 operator+ (const Vector3& rhs)
 	{
@@ -403,23 +401,29 @@ public:
 		ret.x = (x * mat[0] + y * mat[4] + z * mat[8] + mat[12]);
 		ret.y = (x * mat[1] + y * mat[5] + z * mat[9] + mat[13]);
 		ret.z = (x * mat[2] + y * mat[6] + z * mat[10] + mat[14]);
-		ret.w = (x * mat[3] + y * mat[7] + z * mat[11] + mat[15]);
-		if (ret.w != 0)
+		double w = (x * mat[3] + y * mat[7] + z * mat[11] + mat[15]);
+		if (w != 0)
 		{
-			ret.x /= ret.w;
-			ret.y /= ret.w;
-			ret.z /= ret.w;
-			ret.w /= ret.w;
+			ret.x /= w;
+			ret.y /= w;
+			ret.z /= w;
+			//ret.w /= ret.w;
 		}
 		return ret;
 	}
 	Vector3& operator*= (const Matrix4x4<T>& mat)
 	{
 		Vector3<T> ret;
-		ret.x = (x * mat[0] + y * mat[4] + z * mat[8] + w * mat[12]);
-		ret.y = (x * mat[1] + y * mat[5] + z * mat[9] + w * mat[13]);
-		ret.z = (x * mat[2] + y * mat[6] + z * mat[10] + w * mat[14]);
-		ret.w = (x * mat[3] + y * mat[7] + z * mat[11] + w * mat[15]);
+		ret.x = (x * mat[0] + y * mat[4] + z * mat[8] + mat[12]);
+		ret.y = (x * mat[1] + y * mat[5] + z * mat[9] + mat[13]);
+		ret.z = (x * mat[2] + y * mat[6] + z * mat[10] + mat[14]);
+		double w = (x * mat[3] + y * mat[7] + z * mat[11] + mat[15]);
+		if (w != 0.0)
+		{
+			ret.x /= w;
+			ret.y /= w;
+			ret.z /= w;
+		}
 		*this = ret;
 		return *this;
 	}

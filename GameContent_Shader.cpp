@@ -93,6 +93,7 @@ std::string Shader::Load(std::string vertex, std::string fragment)
 		glDeleteShader(fragmentId);
 		glDeleteShader(vertexId);
 		glDeleteProgram(shaderId);
+		loaded = false;
 	}
 
 	vertexId = glCreateShader(GL_VERTEX_SHADER);
@@ -106,7 +107,7 @@ std::string Shader::Load(std::string vertex, std::string fragment)
 		ret = "Vertex Shader not found.";
 		return ret;
 	}
-	else if (fragmentCode.length() == 0)
+	if (fragmentCode.length() == 0)
 	{
 		ret = "Fragment Shader not found.";
 		return ret;
