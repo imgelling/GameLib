@@ -19,10 +19,6 @@ public:
 	bool HasStopped();
 	void Reset();
 	std::shared_ptr <asio::io_context> GetService() { return io_context; };
-	void Join() // temp
-	{
-		worker_threads.join();
-	}
 
 	// Used for queueing up work
 	template <typename a1>
