@@ -9,16 +9,20 @@
 #include <shared_mutex>
 #include <asio.hpp>
 
-class ThreadPool : public std::enable_shared_from_this< ThreadPool >//boost::enable_shared_from_this< ThreadPool >
+class GameThreadPool : public std::enable_shared_from_this< GameThreadPool >//boost::enable_shared_from_this< ThreadPool >
 
 {
 public:
-	ThreadPool(int NumOfThreads = 2);
+	GameThreadPool(int NumOfThreads = 2);
 	void Start();
 	void Stop();
 	bool HasStopped();
 	void Reset();
 	std::shared_ptr <asio::io_context> GetService() { return io_context; };
+	void Join() // temp
+	{
+		worker_threads.join();
+	}
 
 	// Used for queueing up work
 	template <typename a1>
@@ -39,7 +43,7 @@ private:
 };
 
 template <typename a1>
-void ThreadPool::Enqueue(a1 arg1)
+void GameThreadPool::Enqueue(a1 arg1)
 {
 	if (HasStopped())
 	{
@@ -54,7 +58,7 @@ void ThreadPool::Enqueue(a1 arg1)
 }
 
 template <typename a1>
-void ThreadPool::Do(a1 arg1)
+void GameThreadPool::Do(a1 arg1)
 {
 	if (HasStopped())
 	{

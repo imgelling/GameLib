@@ -1,6 +1,6 @@
 #include "GameThreadPool.h"
 
-void ThreadPool::Stop()
+void GameThreadPool::Stop()
 {
 	if (HasStopped())
 	{
@@ -21,7 +21,7 @@ void ThreadPool::Stop()
 
 }
 
-void ThreadPool::Reset()
+void GameThreadPool::Reset()
 {
 	if (!HasStopped())
 	{
@@ -37,7 +37,7 @@ void ThreadPool::Reset()
 	work.reset();
 }
 
-bool ThreadPool::HasStopped()
+bool GameThreadPool::HasStopped()
 {
 	stop_mutex.lock();
 	bool ret = stopped;
@@ -45,7 +45,7 @@ bool ThreadPool::HasStopped()
 	return ret;
 }
 
-void ThreadPool::WorkerThread(std::shared_ptr< asio::io_context > io_context)
+void GameThreadPool::WorkerThread(std::shared_ptr< asio::io_context > io_context)
 {
 	#ifdef _DEBUG
 		global_stream_lock.lock();
@@ -95,13 +95,13 @@ void ThreadPool::WorkerThread(std::shared_ptr< asio::io_context > io_context)
 	#endif
 }
 
-ThreadPool::ThreadPool(int NumOfThreads)
+GameThreadPool::GameThreadPool(int NumOfThreads)
 {
 	numOfThreads = NumOfThreads;
 	stopped = true;
 }
 
-void ThreadPool::Start()
+void GameThreadPool::Start()
 {
 	if (!HasStopped())
 	{
@@ -121,9 +121,9 @@ void ThreadPool::Start()
 		work = std::shared_ptr<asio::io_context::work>(new asio::io_context::work(*io_context));
 		for (int x = 0; x < numOfThreads; x++)
 		{
-			worker_threads.create_thread(std::bind(&ThreadPool::WorkerThread, this, io_context));
+			worker_threads.create_thread(std::bind(&GameThreadPool::WorkerThread, this, io_context));
 		}
-
+		
 	}
 	catch (std::exception& ex)
 	{
