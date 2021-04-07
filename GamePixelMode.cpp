@@ -83,7 +83,8 @@ void GamePixelMode::Flip(GameSpriteBatch *sb, bool full)
 }
 GamePixelMode::~GamePixelMode()
 {
-	delete[] Video;
+	if (Video != NULL)
+		delete[] Video;
 	glDeleteTextures(1, &WindowBuffer[0].bind);
 	glDeleteTextures(1, &WindowBuffer[1].bind);
 }
@@ -107,7 +108,6 @@ void GamePixelMode::CreateBuffers(int width, int height, int resW, int resH)
 		glDeleteTextures(1, &WindowBuffer[0].bind);
 		glDeleteTextures(1, &WindowBuffer[1].bind);
 	}
-	Video = NULL;
 	GLuint t = width * height;
 	Video = new GLuint[t];
 

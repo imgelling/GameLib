@@ -29,7 +29,7 @@ GameKeyboard::GameKeyboard()
 GameKeyboard::~GameKeyboard()
 {
 	if (lastKeyStates != 0)
-		delete lastKeyStates;
+		delete [] lastKeyStates;
 		
 }
 

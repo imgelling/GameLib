@@ -29,10 +29,10 @@ struct FontDescriptor
 
 struct Charset
 {
-	unsigned short lineHeight;
-	unsigned short base;
-	unsigned short width, height;
-	unsigned short pages;
+	unsigned short lineHeight = 0;
+	unsigned short base = 0;
+	unsigned short width = 0, height = 0;
+	unsigned short pages = 0;
 	FontDescriptor chars[256];
 };
 

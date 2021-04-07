@@ -440,13 +440,13 @@ void Game::ToggleFullscreen(bool desktopMode)
 		SDL_GetWindowSize(window, &w, &h);
 		if (desktopMode)
 		{
-			Logger->Write("Swapping to desktop full screen mode.");
+			Logger->Write("Swapping to borderless full screen mode.");
 			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP); // fake, for real remove desktop
 			Mouse.ScaleMousePos(w, h);
 		}
 		else
 		{
-			Logger->Write("Swapping to borderless full screen mode.");
+			Logger->Write("Swapping to full screen mode.");
 			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 			Mouse.ScaleMousePos(w, h);
 		}

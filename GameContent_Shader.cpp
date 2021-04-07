@@ -85,16 +85,8 @@ std::string Shader::Load(std::string vertex, std::string fragment)
 	std::string ret;
 	std::stringstream err;
 
-	if (loaded)
-	{
-		glDetachShader(shaderId, fragmentId);
-		glDetachShader(shaderId, vertexId);
-
-		glDeleteShader(fragmentId);
-		glDeleteShader(vertexId);
-		glDeleteProgram(shaderId);
-		loaded = false;
-	}
+	// Unload if loaded already
+	UnLoad();
 
 	vertexId = glCreateShader(GL_VERTEX_SHADER);
 	fragmentId = glCreateShader(GL_FRAGMENT_SHADER);
