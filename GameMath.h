@@ -433,7 +433,10 @@ public:
 	void Normalize()
 	{
 		double l = Mag();
-		*this /= l;
+		if (l == 0) return;
+		x /= l;
+		y /= l;
+		z /= l;
 	}
 	Vector3 Cross(const Vector3& rhs)
 	{
