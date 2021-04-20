@@ -326,7 +326,8 @@ public:
 	T x;
 	T y;
 	T z;
-	Vector3() : x((T)0.0), y((T)0.0), z((T)0.0) {}
+	T w;
+	Vector3() : x((T)0.0), y((T)0.0), z((T)0.0), w((T)1.0) {}
 	Vector3(const T& x, const T& y, const T& z)
 	{
 		this->x = x;
@@ -400,13 +401,13 @@ public:
 		ret.x = (x * mat[0] + y * mat[4] + z * mat[8] + mat[12]);
 		ret.y = (x * mat[1] + y * mat[5] + z * mat[9] + mat[13]);
 		ret.z = (x * mat[2] + y * mat[6] + z * mat[10] + mat[14]);
-		double w = (x * mat[3] + y * mat[7] + z * mat[11] + mat[15]);
-		if (w != 0)
-		{
-			ret.x /= w;
-			ret.y /= w;
-			ret.z /= w;
-		}
+		ret.w = (x * mat[3] + y * mat[7] + z * mat[11] + mat[15]);
+		//if (w != 0)
+		//{
+		//	ret.x /= w;
+		//	ret.y /= w;
+		//	ret.z /= w;
+		//}
 		return ret;
 	}
 	Vector3& operator*= (const Matrix4x4<T>& mat)
@@ -415,13 +416,13 @@ public:
 		ret.x = (x * mat[0] + y * mat[4] + z * mat[8] + mat[12]);
 		ret.y = (x * mat[1] + y * mat[5] + z * mat[9] + mat[13]);
 		ret.z = (x * mat[2] + y * mat[6] + z * mat[10] + mat[14]);
-		double w = (x * mat[3] + y * mat[7] + z * mat[11] + mat[15]);
-		if (w != 0.0)
-		{
-			ret.x /= w;
-			ret.y /= w;
-			ret.z /= w;
-		}
+		ret.w = (x * mat[3] + y * mat[7] + z * mat[11] + mat[15]);
+		//if (w != 0.0)
+		//{
+		//	ret.x /= w;
+		//	ret.y /= w;
+		//	ret.z /= w;
+		//}
 		*this = ret;
 		return *this;
 	}
