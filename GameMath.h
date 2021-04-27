@@ -333,6 +333,7 @@ public:
 		this->x = x;
 		this->y = y;
 		this->z = z;
+		this->w = (T)1;
 	}
 	Vector3 operator+ (const Vector3& rhs)
 	{
@@ -398,10 +399,10 @@ public:
 	Vector3 operator* (const Matrix4x4<T>& mat)
 	{
 		Vector3<T> ret;
-		ret.x = (x * mat[0] + y * mat[4] + z * mat[8] + mat[12]);
-		ret.y = (x * mat[1] + y * mat[5] + z * mat[9] + mat[13]);
-		ret.z = (x * mat[2] + y * mat[6] + z * mat[10] + mat[14]);
-		ret.w = (x * mat[3] + y * mat[7] + z * mat[11] + mat[15]);
+		ret.x = (x * mat[0] + y * mat[4] + z * mat[8] + w * mat[12]);
+		ret.y = (x * mat[1] + y * mat[5] + z * mat[9] + w * mat[13]);
+		ret.z = (x * mat[2] + y * mat[6] + z * mat[10] + w * mat[14]);
+		ret.w = (x * mat[3] + y * mat[7] + z * mat[11] + w * mat[15]);
 		//if (w != 0)
 		//{
 		//	ret.x /= w;
@@ -413,10 +414,10 @@ public:
 	Vector3& operator*= (const Matrix4x4<T>& mat)
 	{
 		Vector3<T> ret;
-		ret.x = (x * mat[0] + y * mat[4] + z * mat[8] + mat[12]);
-		ret.y = (x * mat[1] + y * mat[5] + z * mat[9] + mat[13]);
-		ret.z = (x * mat[2] + y * mat[6] + z * mat[10] + mat[14]);
-		ret.w = (x * mat[3] + y * mat[7] + z * mat[11] + mat[15]);
+		ret.x = (x * mat[0] + y * mat[4] + z * mat[8] + w * mat[12]);
+		ret.y = (x * mat[1] + y * mat[5] + z * mat[9] + w * mat[13]);
+		ret.z = (x * mat[2] + y * mat[6] + z * mat[10] + w * mat[14]);
+		ret.w = (x * mat[3] + y * mat[7] + z * mat[11] + w * mat[15]);
 		//if (w != 0.0)
 		//{
 		//	ret.x /= w;
