@@ -206,6 +206,8 @@ void Game::LogGraphicsCard()
 	GLint pixelFormat, pixelType;
 	glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_TEXTURE_IMAGE_FORMAT, 1, &pixelFormat);
 	glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_TEXTURE_IMAGE_TYPE, 1, &pixelType);
+	videoInfo.internalPixelFormat = pixelFormat;
+	videoInfo.internalPixelType = pixelType;
 	str.str(std::string());
 	str << "Internal texture format is " << pixelFormat << " and type is " << pixelType;
 	Logger->Write(str.str());

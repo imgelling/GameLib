@@ -16,6 +16,9 @@
 
 
 
+
+
+
 // METHODS /////////////////////////////////////////////////////////////////////
 
 TextureManager::TextureManager()
@@ -109,7 +112,8 @@ bool TextureManager::Load(std::string filename, GameTexture2D &tex, bool mipmaps
 	tex.widthDiv = 1.0f / (float)tex.width;
 	tex.heightDiv = 1.0f / (float)tex.height;
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surf->w, surf->h, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, surf->pixels);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surf->w, surf->h, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, surf->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surf->w, surf->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surf->pixels);
 	if (mipmaps)
 		glGenerateMipmap(GL_TEXTURE_2D);
 	Textures[filename] = tex;

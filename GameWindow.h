@@ -25,6 +25,8 @@
 #endif
 
 
+
+
 // DECLARATIONS ////////////////////////////////////////////////////////////////
 
 struct GameAttributes
@@ -59,6 +61,13 @@ struct GameAttributes
 	}
 };
 
+struct VideoInfo
+{
+	GLint internalPixelFormat = 0;
+	GLint internalPixelType = 0;
+};
+
+
 class Game
 {
     public:
@@ -78,7 +87,8 @@ class Game
         virtual void Render(const double &MSelapsed)=0;
         virtual void Update(const double &MSelapsed)=0;
 
-
+		// VideoStuff
+		VideoInfo videoInfo;
 		int GameWidth() { return gameWidth; }
 		int GameHeight() { return gameHeight; }
 
