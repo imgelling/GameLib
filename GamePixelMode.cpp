@@ -111,6 +111,7 @@ void GamePixelMode::CreateBuffers(int width, int height, int resW, int resH)
 	GLuint t = width * height;
 	Video = new GLuint[t];
 
+
 	current = 0;
 	
 
