@@ -284,10 +284,10 @@ void GameSpriteBatch::Draw(GameTexture2D tex, Recti dest, Recti src, Color color
 	y = (float)dest.top;
 
 	// Color variables
-	r = color.r;
-	g = color.g;
-	b = color.b;
-	a = color.a;
+	r = color.rf;
+	g = color.gf;
+	b = color.bf;
+	a = color.af;
 
 	// Source variables
 	widthDiv = tex.widthDiv;
@@ -475,7 +475,7 @@ Vector2f GameSpriteBatch::RotatePoint(Vector2f toRot, Point2i around, const floa
 
 	// Translate to origin
 	toRot.x = (toRot.x - around.x);
-	//toRot.y = (float)(toRot.y - around.y);
+	toRot.y = (float)(toRot.y - around.y);
 	
 	//x = (float)(toRot.x -around.x);
 	//y = (float)(toRot.y -around.y);
@@ -487,10 +487,8 @@ Vector2f GameSpriteBatch::RotatePoint(Vector2f toRot, Point2i around, const floa
 	// Translate back
 	ret.x = ret.y + around.y;
 	ret.y = ret.y + around.y;
-	//ret.x += around.x;
-	//ret.y += around.y;
+	//ret = ret + around;
 
-	//return ret;
 	return ret;
 }
 
@@ -532,10 +530,10 @@ void GameSpriteBatch::Draw(GameTexture2D tex, Recti dest, Recti src, Point2i ori
 	}
 
 	// Color variables
-	r = color.r;
-	g = color.g;
-	b = color.b;
-	a = color.a;
+	r = color.rf;
+	g = color.gf;
+	b = color.bf;
+	a = color.af;
 
 	// Source variables
 	float widthDiv = 1.0f /  (float)tex.width;

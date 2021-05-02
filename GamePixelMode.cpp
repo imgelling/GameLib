@@ -8,42 +8,43 @@
 #include <fstream>
 #include <sstream>
 
-void GamePixelMode::LoadPalette()
-{
-	std::stringstream str;
-	std::ifstream in("Content/pal.txt");
-	int r, g, b;
-	for (int cols = 0; cols < 256; cols++)
-	{
-		in >> r;
-		in >> g;
-		in >> b;
-		pal[cols].Set((unsigned char)r, (unsigned char)g, (unsigned char)b);
-	}
-	in.close();
-}
-
-void GamePixelMode::GetPal(Color256 *p)
-{
-	for (int i = 0;i < 256;i++)
-	{
-		p[i] = pal[i];
-	}
-}
-Color256 GamePixelMode::GetPalLoc(int loc)
-{
-	return pal[loc];
-}
-void GamePixelMode::SetPalLoc(int loc, Color256 color)
-{
-	pal[loc] = color;
-}
+//void GamePixelMode::LoadPalette()
+//{
+//	std::stringstream str;
+//	std::ifstream in("Content/pal.txt");
+//	int r, g, b;
+//	for (int cols = 0; cols < 256; cols++)
+//	{
+//		in >> r;
+//		in >> g;
+//		in >> b;
+//		pal[cols].Set((unsigned char)r, (unsigned char)g, (unsigned char)b);
+//	}
+//	in.close();
+//}
+//
+//void GamePixelMode::GetPal(Color256 *p)
+//{
+//	for (int i = 0;i < 256;i++)
+//	{
+//		p[i] = pal[i];
+//	}
+//}
+//Color256 GamePixelMode::GetPalLoc(int loc)
+//{
+//	return pal[loc];
+//}
+//void GamePixelMode::SetPalLoc(int loc, Color256 color)
+//{
+//	pal[loc] = color;
+//}
 // Might be best to change flip to draw 1 triangle instead of SpriteBatch
 void GamePixelMode::Flip(GameSpriteBatch *sb, bool full)
 {
 	UpdateWindowBuffer();
 
-	posx = posy = 0;
+	int posx = 0;
+	int posy = 0;
 	double sx = 0;
 	double sy = 0;
 	double temp = 0;
@@ -88,16 +89,17 @@ GamePixelMode::~GamePixelMode()
 	glDeleteTextures(1, &WindowBuffer[0].bind);
 	glDeleteTextures(1, &WindowBuffer[1].bind);
 }
-void GamePixelMode::SetPal(Color256 palette[256])
-{
-	for (int i = 0; i < 256; i++)
-	{
-		pal[i] = palette[i];
-	}
-}
+//void GamePixelMode::SetPal(Color256 palette[256])
+//{
+//	for (int i = 0; i < 256; i++)
+//	{
+//		pal[i] = palette[i];
+//	}
+//}
 // Create Window Buffer does not create a pow2 texture
 void GamePixelMode::CreateBuffers(int width, int height, int resW, int resH)
 {
+	float scale = 0.0f;
 	this->width = width;
 	this->height = height;
 	gameWidth = resW;
@@ -118,8 +120,8 @@ void GamePixelMode::CreateBuffers(int width, int height, int resW, int resH)
 	float w = gameWidth / (float)width;
 	float h = gameHeight / (float)height;
 	w < h ? scale = w : scale = h;
-	posx = (int)((gameWidth - (width * scale)) / 2);
-	posy = (int)((gameHeight - (height * scale)) / 2);
+	int posx = (int)((gameWidth - (width * scale)) / 2);
+	int posy = (int)((gameHeight - (height * scale)) / 2);
 	for (int i = 0; i < 2; i++)
 	{
 		glGenTextures(1, &WindowBuffer[i].bind);
@@ -142,11 +144,8 @@ void GamePixelMode::CreateBuffers(int width, int height, int resW, int resH)
 GamePixelMode::GamePixelMode()
 {
 	current = 0;
-	scale = 0;
-	posx = posy = 0;
 	width = height = 0;
 	gameWidth = gameHeight = 0;
-	LoadPalette();
 	Video = NULL;
 }
 void GamePixelMode::UpdateWindowBuffer()
@@ -161,12 +160,17 @@ void GamePixelMode::UpdateWindowBuffer()
 	return;
 }
 
-void GamePixelMode::Clear(unsigned char color)
+void GamePixelMode::Clear(unsigned int color)
 {
-	std::fill_n(Video, width*height, pal[color].PackedColor);
+	std::fill_n(Video, width*height, color);
+}
+
+void GamePixelMode::Clear(Color color)
+{
+	std::fill_n(Video, width * height, color.packed);
 }
 
 void GamePixelMode::Clear()
 {
-	memset((void*)Video, 0, (size_t)width * (size_t)height * sizeof(GLuint));
+	memset(Video, 0, (size_t)width * (size_t)height * sizeof(GLuint));
 }

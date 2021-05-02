@@ -15,29 +15,23 @@ class GamePixelMode
 public:
 	void CreateBuffers(int, int, int, int);
 	void UpdateWindowBuffer();
-	void SetPal(Color256[256]);
-	void GetPal(Color256 *);
-	Color256 GetPalLoc(int);
-	void SetPalLoc(int, Color256);
-	// Clears the buffer to a color, slower
-	void Clear(unsigned char);
-	// Clears the buffer to 0, MUCH FASTER
+	// Clears the buffer to a color
+	void Clear(unsigned int);
+	// Clears the buffer to a color
+	void Clear(Color);
+	// Clears the buffer to 0
 	void Clear();
 	void Flip(GameSpriteBatch *, bool);
-	void LoadPalette();
+	//void LoadPalette();
 	GamePixelMode();
 	~GamePixelMode();
 	GLuint *Video;
-	Color256 pal[256];
 private:
 
 	GameTexture2D WindowBuffer[2];
-	//GLuint pbo[2];
 	int current;
 	int width;
 	int height;
 	int gameWidth;
 	int gameHeight;
-	float scale;
-	int posx, posy;
 };
