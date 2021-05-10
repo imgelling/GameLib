@@ -29,6 +29,7 @@
 
 // DECLARATIONS ////////////////////////////////////////////////////////////////
 
+
 struct GameAttributes
 {
 	int GL_ContextMajor;
@@ -61,12 +62,38 @@ struct GameAttributes
 	}
 };
 
-struct VideoInfo
+class CPUInfo
 {
-	GLint internalPixelFormat = 0;
-	GLint internalPixelType = 0;
+public:
+	unsigned int processorCount = 0;
 };
 
+class GPUInfo
+{
+public:
+	GLint internalPixelFormat = 0;
+	GLint internalPixelType = 0;
+	GLint totalMemory = 0;
+	GLint freeMemory = 0;
+	GLint glVersionMajor = 0;
+	GLint glVersionMinor = 0;
+	GLubyte glShaderLanguageVersion = 0;
+	GLint glMultisampleBuffers = 0;
+	GLint glMultisampleSamples = 0;
+	Color frontBufferColorSize;
+	Color backBufferColorSize;
+	GLint depthBufferSize = 0;
+	std::string renderer;
+	std::string vendor;
+};
+class SystemInfo
+{
+public:
+	CPUInfo cpuInfo;
+	GPUInfo gpuInfo;
+};
+
+extern SystemInfo systemInfo;
 
 class Game
 {
@@ -88,7 +115,6 @@ class Game
         virtual void Update(const double &MSelapsed)=0;
 
 		// VideoStuff
-		VideoInfo videoInfo;
 		int GameWidth() { return gameWidth; }
 		int GameHeight() { return gameHeight; }
 

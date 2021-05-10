@@ -5,6 +5,9 @@
 #include "GameWindow.h"
 #include "GameDebug.h"
 
+
+SystemInfo systemInfo;
+
 static void GLAPIENTRY openglCallbackFunction(GLenum source,
 	GLenum type,
 	GLuint id,
@@ -135,13 +138,7 @@ Game::Game()
 
 Game::~Game()
 {
-	// Shut down SDL_Mixer
-#ifdef __linux__
-
-#else
-	//Mix_CloseAudio();
-#endif
-
+	// Turn off keyboard input
 	if (Keyboard.TextInputIsOn())
 	{
 		Keyboard.EndInputText();
@@ -173,10 +170,12 @@ void Game::LogGraphicsCard()
 	std::stringstream str;
 	// Graphics card info
 	str << "Renderer is " << glGetString(GL_RENDERER) << ".";
+	systemInfo.gpuInfo.renderer = str.str();
 	Logger->Write(str.str());
 	str.str(std::string());
 	str << glGetString(GL_VENDOR);
 	std::string test = str.str();
+	systemInfo.gpuInfo.vendor = test;
 	str.str(std::string());
 	GLint total_mem_kb[4] = { 0 };
 	GLint cur_avail_mem_kb[4] = { 0 };
@@ -191,7 +190,8 @@ void Game::LogGraphicsCard()
 		
 		glGetIntegerv(GL_GPU_MEM_INFO_CURRENT_AVAILABLE_MEM_NVX,
 			&cur_avail_mem_kb[0]);
-
+		systemInfo.gpuInfo.totalMemory = total_mem_kb[0] / 1024;
+		systemInfo.gpuInfo.freeMemory = cur_avail_mem_kb[0] / 1024;
 		str << "GPU total memory is " << total_mem_kb[0] / 1024.0f << "MB and has " << cur_avail_mem_kb[0] / 1024.0f << "MB available.";
 		Logger->Write(str.str());
 		str.str(std::string());
@@ -206,8 +206,8 @@ void Game::LogGraphicsCard()
 	GLint pixelFormat, pixelType;
 	glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_TEXTURE_IMAGE_FORMAT, 1, &pixelFormat);
 	glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_TEXTURE_IMAGE_TYPE, 1, &pixelType);
-	videoInfo.internalPixelFormat = pixelFormat;
-	videoInfo.internalPixelType = pixelType;
+	systemInfo.gpuInfo.internalPixelFormat = pixelFormat;
+	systemInfo.gpuInfo.internalPixelType = pixelType;
 	str.str(std::string());
 	str << "Internal texture format is " << pixelFormat << " and type is " << pixelType;
 	Logger->Write(str.str());
@@ -216,10 +216,13 @@ void Game::LogGraphicsCard()
 void Game::LogOpenGLInfo()
 {
 	std::stringstream str;
-	int glMajor, glMinor;
+	GLint glMajor, glMinor;
 
 	SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &glMajor);
 	SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &glMinor);
+
+	systemInfo.gpuInfo.glVersionMajor = glMajor;
+	systemInfo.gpuInfo.glVersionMinor = glMinor;
 
 	Logger->Write("OpenGL version " +
 		(std::string)(const char *)glGetString(GL_VERSION) +
@@ -228,16 +231,19 @@ void Game::LogOpenGLInfo()
 	Logger->Write(str.str());
 	str.str(std::string());
 	str << "GLSL version ";
-	str << glGetString(GL_SHADING_LANGUAGE_VERSION);
+	systemInfo.gpuInfo.glShaderLanguageVersion = *glGetString(GL_SHADING_LANGUAGE_VERSION);
+	str << systemInfo.gpuInfo.glShaderLanguageVersion;
 	str << " detected.";
 	Logger->Write(str.str());
 	str.str(std::string());
 
 	int MSbuff, MSsamp;
 	SDL_GL_GetAttribute(SDL_GL_MULTISAMPLEBUFFERS, &MSbuff);
+	systemInfo.gpuInfo.glMultisampleBuffers = MSbuff;
 	if (MSbuff > 0)
 	{
 		SDL_GL_GetAttribute(SDL_GL_MULTISAMPLESAMPLES, &MSsamp);
+		systemInfo.gpuInfo.glMultisampleSamples = MSsamp;
 		str << "Multisampling enabled with " << MSsamp << " samples.";
 		Logger->Write(str.str());
 	}
@@ -258,17 +264,18 @@ void Game::LogWindowInfo(bool verbose)
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, GL_FRONT_LEFT, GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE, &g);
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, GL_FRONT_LEFT, GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE, &b);
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, GL_FRONT_LEFT, GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE, &a);
-
+	systemInfo.gpuInfo.frontBufferColorSize.Set((unsigned int)r, g, b, a);
 	// Back Buffer
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, GL_BACK_LEFT, GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE, &br);
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, GL_BACK_LEFT, GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE, &bg);
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, GL_BACK_LEFT, GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE, &bb);
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, GL_BACK_LEFT, GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE, &ba);
 	back = br + bg + bb + ba;
+	systemInfo.gpuInfo.backBufferColorSize.Set((unsigned int)br, bg, bb, ba);
 
 	// Depth Buffer
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE, &depth);
-	
+	systemInfo.gpuInfo.depthBufferSize = depth;
 
 	SDL_GetWindowSize(window, &w, &h);
 
@@ -482,6 +489,8 @@ void Game::Run()
 	SDL_Event e;
 	double now;
 	ASSERT(isLogSet);
+
+	systemInfo.cpuInfo.processorCount = std::thread::hardware_concurrency();
 	
 	Initialize();
     if (!CreateTheWindow()) return;
