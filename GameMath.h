@@ -41,8 +41,6 @@ public:
 	{
 		memcpy(m, in, sizeof(in));
 	}
-	inline T& operator[](const int& i) { return m[i]; }
-	inline const T& operator[] (const int& i) const { return m[i]; }
 	Matrix4x4 operator+ (const Matrix4x4& rhs)
 	{
 		Matrix4x4<T> ret;
@@ -310,11 +308,11 @@ template <typename T>
 class Vector3
 {
 public:
-	T x;
-	T y;
-	T z;
-	T w;
-	Vector3() : x((T)0.0), y((T)0.0), z((T)0.0), w((T)1.0) {}
+	T x = 0;
+	T y = 0;
+	T z = 0;
+	T w = 1;
+	Vector3() {}
 	Vector3(const T& x, const T& y, const T& z)
 	{
 		this->x = x;
@@ -325,14 +323,13 @@ public:
 	Vector3 operator+ (const Vector3& rhs)
 	{
 		Vector3<T> c;
-		c.x = x + rhs.x;
+		c.x = x + rhs.x;	// why no work?
 		c.y = y + rhs.y;
 		c.z = z + rhs.z;
 		return c;
 	}
 	Vector3& operator+= (const Vector3& rhs)
 	{
-		//Vector3<T> c;
 		x = x + rhs.x;
 		y = y + rhs.y;
 		z = z + rhs.z;
@@ -355,15 +352,15 @@ public:
 	}
 	Vector3 operator* (const T& scalar)
 	{
-		Vector3<T> c(x, y, z);
-		c.x = c.x * scalar;
-		c.y = c.y * scalar;
-		c.z = c.z * scalar;
+		Vector3<T> c;			// why no work?
+		c.x = x * scalar;
+		c.y = y * scalar;
+		c.z = z * scalar;
 		return c;
 	}
 	Vector3& operator*= (const T& scalar)
 	{
-		x = x * scalar;
+		x = x * scalar;	
 		y = y * scalar;
 		z = z * scalar;
 		return *this;
@@ -386,10 +383,10 @@ public:
 	Vector3 operator* (const Matrix4x4<T>& mat)
 	{
 		Vector3<T> ret;
-		ret.x = (x * mat[0] + y * mat[4] + z * mat[8] + w * mat[12]);
-		ret.y = (x * mat[1] + y * mat[5] + z * mat[9] + w * mat[13]);
-		ret.z = (x * mat[2] + y * mat[6] + z * mat[10] + w * mat[14]);
-		ret.w = (x * mat[3] + y * mat[7] + z * mat[11] + w * mat[15]);
+		ret.x = (x * mat.m[0] + y * mat.m[4] + z * mat.m[8] + w * mat.m[12]);
+		ret.y = (x * mat.m[1] + y * mat.m[5] + z * mat.m[9] + w * mat.m[13]);
+		ret.z = (x * mat.m[2] + y * mat.m[6] + z * mat.m[10] + w * mat.m[14]);
+		ret.w = (x * mat.m[3] + y * mat.m[7] + z * mat.m[11] + w * mat.m[15]);
 		//if (w != 0)
 		//{
 		//	ret.x /= w;
@@ -401,16 +398,10 @@ public:
 	Vector3& operator*= (const Matrix4x4<T>& mat)
 	{
 		Vector3<T> ret;
-		ret.x = (x * mat[0] + y * mat[4] + z * mat[8] + w * mat[12]);
-		ret.y = (x * mat[1] + y * mat[5] + z * mat[9] + w * mat[13]);
-		ret.z = (x * mat[2] + y * mat[6] + z * mat[10] + w * mat[14]);
-		ret.w = (x * mat[3] + y * mat[7] + z * mat[11] + w * mat[15]);
-		//if (w != 0.0)
-		//{
-		//	ret.x /= w;
-		//	ret.y /= w;
-		//	ret.z /= w;
-		//}
+		ret.x = (x * mat.m[0] + y * mat.m[4] + z * mat.m[8] + w * mat.m[12]);
+		ret.y = (x * mat.m[1] + y * mat.m[5] + z * mat.m[9] + w * mat.m[13]);
+		ret.z = (x * mat.m[2] + y * mat.m[6] + z * mat.m[10] + w * mat.m[14]);
+		ret.w = (x * mat.m[3] + y * mat.m[7] + z * mat.m[11] + w * mat.m[15]);
 		*this = ret;
 		return *this;
 	}
