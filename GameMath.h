@@ -130,8 +130,8 @@ public:
 	void SetRotationY(const T& rot)
 	{
 		m[0] = cos(rot);
-		m[2] = sin(rot);
-		m[8] = -sin(rot);
+		m[2] = -sin(rot);
+		m[8] = sin(rot);
 		m[10] = cos(rot);
 	}
 	void SetRotationZ(const T& rot)
