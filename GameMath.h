@@ -322,10 +322,10 @@ public:
 	}
 	Vector3 operator+ (const Vector3& rhs)
 	{
-		Vector3<T> c;
-		c.x = x + rhs.x;	// why no work?
-		c.y = y + rhs.y;
-		c.z = z + rhs.z;
+		Vector3<T> c = *this;
+		c.x += rhs.x;	// why no work?
+		c.y += rhs.y;
+		c.z += rhs.z;
 		return c;
 	}
 	Vector3& operator+= (const Vector3& rhs)
@@ -352,10 +352,10 @@ public:
 	}
 	Vector3 operator* (const T& scalar)
 	{
-		Vector3<T> c;			// why no work?
-		c.x = x * scalar;
-		c.y = y * scalar;
-		c.z = z * scalar;
+		Vector3<T> c = *this;			// why no work?
+		c.x = c.x * scalar;
+		c.y = c.y * scalar;
+		c.z = c.z * scalar;
 		return c;
 	}
 	Vector3& operator*= (const T& scalar)
