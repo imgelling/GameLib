@@ -38,6 +38,8 @@
 #ifdef GAME_DO_NETWORK
 #include "GameNetwork.h"
 #endif
+#include "GameSoftware3d_Camera.h"
+#include "GameSoftware3d_Data.h"
 
 
 

@@ -265,8 +265,10 @@ public:
 	T Mag() { return sqrt((x * x) + (y * y)); }
 	void Normalize()
 	{
-		*this /= Mag();
-		
+		double l = Mag();
+		if (l == 0) return;
+		x /= l;
+		y /= l;
 	}
 	double Dot(const Vector2<T>& rhs)
 	{

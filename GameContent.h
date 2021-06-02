@@ -11,6 +11,7 @@
 #include "GameContent_TextureManager.h"
 #include "GameContent_SpriteFont.h"
 #include "GameContent_Shader.h"
+#include "Gamesoftware3D_Data.h"
 
 
 
@@ -30,6 +31,7 @@ class GameContent
 		bool Load(std::string, GameTexture2D &);
 		bool Load(std::string, GameSpriteFont &);
 		bool Load(std::string, std::string, Shader &, std::string &);
+		bool Load(std::string, Mesh&);
 		void UnLoad(GameTexture2D &);
 		void UnLoad(GameSpriteFont &);
 		void UnLoad(Shader &);
