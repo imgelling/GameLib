@@ -432,6 +432,17 @@ public:
 	{
 		return *this * (1 - by) + (Vector3<T>)second * by;
 	}
+	Vector3 Lerp(const Vector3<T>& first, const Vector3<T>& second, const T by)
+	{
+		Vector3<T> ret;
+		//out_tri1.vNormals[1].x = in_normals[0].x * (1 - res.x) + out_normals[0].x * res.x;
+		//out_tri1.vNormals[1].y = in_normals[0].y * (1 - res.y) + out_normals[0].y * res.y;
+		//out_tri1.vNormals[1].z = in_normals[0].z * (1 - res.z) + out_normals[0].z * res.z;
+		ret.x = first.x * (1.0 - by) + second.x * by;
+		ret.y = first.y * (1.0 - by) + second.y * by;
+		ret.z = first.z * (1.0 - by) + second.z * by;
+		return ret;
+	}
 	Vector3 NLerp(const Vector3<T>& second, const T& by)
 	{
 		return Lerp(second, by).Normalize();
@@ -446,7 +457,7 @@ public:
 		relative = relative.Normalize();
 		return ((*this * std::cos(theta)) + (relative * std::sin(theta)));
 	}
-	Vector3  InvLerp(const Vector3<T>& second, const Vector3<T>& result)
+	Vector3 InvLerp(const Vector3<T>& second, const Vector3<T>& result)
 	{
 		Vector3<double> ab;// = result - *this;
 		ab.x = result.x - x;

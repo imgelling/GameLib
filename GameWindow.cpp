@@ -506,7 +506,7 @@ void Game::Run()
 		if (fpslock.TimeToRender())
 		{
 			perf.Start("GameWindow Render");
-			Render(RenderTime.Now().MillisecondsElapsed);
+			Render(RenderTime.Now().SecondsElapsed); // .MillisecondsElapsed);
 			Present();
 			perf.Stop("GameWindow Render");
 		}
@@ -580,7 +580,7 @@ void Game::Run()
 			}
 		}
 
-		now = UpdateTime.Now().MillisecondsElapsed;
+		now = UpdateTime.Now().SecondsElapsed;//.MillisecondsElapsed;
 		perf.Start("GameWindow Update");
 		Update(now > MAX_FRAME_TIME ? MAX_FRAME_TIME : now);
 		perf.Stop("GameWindow Update");

@@ -53,17 +53,17 @@ int GameTimer::MilliSecondsElapsedi()
 
 float GameTimer::SecondsElapsedf()
 {
-	return (float)(Diff().count() /1000.0f);
+	return (float)(Diff().count() / 1000000.0f);
 }
 
 double GameTimer::SecondsElapsed()
 {
-	return (double)(((Diff().count()) / 1000.0));
+	return (double)(((Diff().count()) / 1000000.0));
 }
 
 int GameTimer::SecondsElapsedi()
 {
-	return (int)((Diff().count()) /1000.0f);
+	return (int)((Diff().count()) / 1000000.0f);
 }
 
 
