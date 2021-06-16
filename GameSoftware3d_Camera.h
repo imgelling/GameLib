@@ -10,7 +10,7 @@ public:
 	Vector3f forward;
 	Vector3f rotation;
 	Camera();
-	void SetRotation(const double&, const double&, const double&);
+	void SetRotation(const float, const float, const float);
 	void SetPosition(const Vector3f&);
 	void SetUp(const Vector3f&);
 	void SetForward(const Vector3f&);

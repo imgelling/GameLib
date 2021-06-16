@@ -487,7 +487,7 @@ void Game::SetFramelock(double fl)
 void Game::Run()
 {
 	SDL_Event e;
-	double now;
+	float now;
 	ASSERT(isLogSet);
 
 	systemInfo.cpuInfo.processorCount = std::thread::hardware_concurrency();
@@ -506,7 +506,7 @@ void Game::Run()
 		if (fpslock.TimeToRender())
 		{
 			perf.Start("GameWindow Render");
-			Render(RenderTime.Now().SecondsElapsed); // .MillisecondsElapsed);
+			Render(RenderTime.Now().SecondsElapsedf); // .MillisecondsElapsed);
 			Present();
 			perf.Stop("GameWindow Render");
 		}
@@ -580,7 +580,7 @@ void Game::Run()
 			}
 		}
 
-		now = UpdateTime.Now().SecondsElapsed;//.MillisecondsElapsed;
+		now = UpdateTime.Now().SecondsElapsedf;//.MillisecondsElapsed;
 		perf.Start("GameWindow Update");
 		Update(now > MAX_FRAME_TIME ? MAX_FRAME_TIME : now);
 		perf.Stop("GameWindow Update");

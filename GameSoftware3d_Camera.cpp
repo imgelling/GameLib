@@ -8,7 +8,7 @@ Camera::Camera()
 	SetForward(Vector3f(0, 0, 1));
 };
 
-void Camera::SetRotation(const double& x, const double& y, const double& z)
+void Camera::SetRotation(const float x, const float y, const float z)
 {
 	static bool first = true;
 	Matrix4x4f rot;

@@ -114,8 +114,8 @@ class Game
         virtual void Initialize()=0;
         virtual void LoadContent()=0;
         virtual void Shutdown()=0;
-        virtual void Render(const double &)=0;
-        virtual void Update(const double &)=0;
+        virtual void Render(const float &)=0;
+        virtual void Update(const float &)=0;
 
 		// VideoStuff
 		int GameWidth() { return gameWidth; }
