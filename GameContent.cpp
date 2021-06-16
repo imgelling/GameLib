@@ -46,7 +46,7 @@ bool GameContent::Load(std::string file, Mesh& mesh)
 	std::ifstream f(file.c_str());
 	std::vector<Vector3f> verts;
 	std::vector<Vector3f> norms;
-	std::vector<double> vcount;
+	std::vector<float> vcount;
 	std::vector<Vector3i> fcount;
 	std::vector<Vector3f> vnorms;
 
