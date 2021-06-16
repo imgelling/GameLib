@@ -44,14 +44,14 @@ bool GameContent::Load(std::string filename, GameSpriteFont &content)
 bool GameContent::Load(std::string file, Mesh& mesh)
 {
 	std::ifstream f(file.c_str());
-	std::vector<Vector3d> verts;
-	std::vector<Vector3d> norms;
+	std::vector<Vector3f> verts;
+	std::vector<Vector3f> norms;
 	std::vector<double> vcount;
 	std::vector<Vector3i> fcount;
-	std::vector<Vector3d> vnorms;
+	std::vector<Vector3f> vnorms;
 
-	std::vector<Vector2d> uvs;
-	Vector3d vert;
+	std::vector<Vector2f> uvs;
+	Vector3f vert;
 	bool hasNormals = false;
 	bool hasUVs = false;
 	char line[256];
@@ -95,7 +95,7 @@ bool GameContent::Load(std::string file, Mesh& mesh)
 				else if (line[1] == 't')  // texture uvs
 				{
 					ss >> junk >> junk >> vert.x >> vert.y;
-					uvs.emplace_back(Vector2d(vert.x, vert.y));
+					uvs.emplace_back(Vector2f(vert.x, vert.y));
 					continue;
 				}
 				else
@@ -107,7 +107,7 @@ bool GameContent::Load(std::string file, Mesh& mesh)
 					// if it has no normals make temporary ones
 					if (!hasNormals)
 					{
-						norms.emplace_back(Vector3d(0, 0, 0));
+						norms.emplace_back(Vector3f(0, 0, 0));
 					}
 					continue;
 				}
@@ -151,9 +151,9 @@ bool GameContent::Load(std::string file, Mesh& mesh)
 				}
 				else
 				{
-					tri.vUV[0] = Vector2d(0, 0);
-					tri.vUV[1] = Vector2d(0, 0);
-					tri.vUV[2] = Vector2d(0, 0);
+					tri.vUV[0] = Vector2f(0, 0);
+					tri.vUV[1] = Vector2f(0, 0);
+					tri.vUV[2] = Vector2f(0, 0);
 				}
 
 
@@ -171,7 +171,7 @@ bool GameContent::Load(std::string file, Mesh& mesh)
 				}
 
 
-				Vector3d a, b;
+				Vector3f a, b;
 				// Calculate the face normal of the triangle
 				a = tri.v[1] - tri.v[0];
 				b = tri.v[2] - tri.v[0];

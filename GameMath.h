@@ -407,14 +407,14 @@ public:
 		*this = ret;
 		return *this;
 	}
-	double Mag2() { return ((x * x) + (y * y) + (z * z)); }
-	double Mag() { return sqrt((x * x) + (y * y) + (z * z)); }
-	double Dot(const Vector3<T>& rhs) {
+	float Mag2() { return ((x * x) + (y * y) + (z * z)); }
+	float Mag() { return sqrt((x * x) + (y * y) + (z * z)); }
+	float Dot(const Vector3<T>& rhs) {
 		return (x * rhs.x) + (y * rhs.y) + (z * rhs.z);
 	}
 	void Normalize()
 	{
-		double l = Mag();
+		float l = Mag();
 		if (l == 0) return;
 		x /= l;
 		y /= l;

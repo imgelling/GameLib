@@ -4,20 +4,20 @@
 class Camera
 {
 public:
-	Vector3d pos;
-	Vector3d right;
-	Vector3d up;
-	Vector3d forward;
-	Vector3d rotation;
+	Vector3f pos;
+	Vector3f right;
+	Vector3f up;
+	Vector3f forward;
+	Vector3f rotation;
 	Camera();
 	void SetRotation(const double&, const double&, const double&);
-	void SetPosition(const Vector3d&);
-	void SetUp(const Vector3d&);
-	void SetForward(const Vector3d&);
-	void SetRight(const Vector3d&);
+	void SetPosition(const Vector3f&);
+	void SetUp(const Vector3f&);
+	void SetForward(const Vector3f&);
+	void SetRight(const Vector3f&);
 
 
-	Vector3d modRight;
-	Vector3d modUp;
-	Vector3d modForward;
+	Vector3f modRight;
+	Vector3f modUp;
+	Vector3f modForward;
 };

@@ -2,16 +2,16 @@
 
 Camera::Camera()
 {
-	SetPosition(Vector3d(0, 0, 0));
-	SetRight(Vector3d(1, 0, 0));
-	SetUp(Vector3d(0, 1, 0));
-	SetForward(Vector3d(0, 0, 1));
+	SetPosition(Vector3f(0, 0, 0));
+	SetRight(Vector3f(1, 0, 0));
+	SetUp(Vector3f(0, 1, 0));
+	SetForward(Vector3f(0, 0, 1));
 };
 
 void Camera::SetRotation(const double& x, const double& y, const double& z)
 {
 	static bool first = true;
-	Matrix4x4d rot;
+	Matrix4x4f rot;
 	// Setup rotation matrices
 	if (x)
 	{
@@ -43,22 +43,22 @@ void Camera::SetRotation(const double& x, const double& y, const double& z)
 		modUp = modUp * rot;
 	}
 }
-void Camera::SetPosition(const Vector3d& in)
+void Camera::SetPosition(const Vector3f& in)
 {
 	pos = in;
 	//modPos = position;
 }
-void Camera::SetUp(const Vector3d& in)
+void Camera::SetUp(const Vector3f& in)
 {
 	up = in;
 	modUp = in;
 }
-void Camera::SetForward(const Vector3d& in)
+void Camera::SetForward(const Vector3f& in)
 {
 	forward = in;
 	modForward = in;
 }
-void Camera::SetRight(const Vector3d& in)
+void Camera::SetRight(const Vector3f& in)
 {
 	right = in;
 	modRight = in;

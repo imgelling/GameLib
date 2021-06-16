@@ -7,11 +7,11 @@
 
 struct Triangle
 {
-	Vector3d v[3];
+	Vector3f v[3];
 	Color col;
-	Vector3d fNormal;
-	Vector3d vNormals[3];
-	Vector2d vUV[3];
+	Vector3f fNormal;
+	Vector3f vNormals[3];
+	Vector2f vUV[3];
 };
 
 struct Mesh
