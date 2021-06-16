@@ -457,26 +457,6 @@ public:
 		relative = relative.Normalize();
 		return ((*this * std::cos(theta)) + (relative * std::sin(theta)));
 	}
-	Vector3 InvLerp(const Vector3<T>& second, const Vector3<T>& result)
-	{
-		Vector3<double> ab;// = result - *this;
-		ab.x = result.x - x;
-		ab.y = result.y - y;
-		ab.z = result.z - z;
-		Vector3<double> av;// = second - *this;
-		av.x = second.x - x;
-		av.y = second.y - y;
-		av.z = second.z - z;
-		Vector3<double> ret;
-		ret.x = ab.x / av.x;
-		if (av.x == 0) ret.x = 0.0;
-		ret.y = ab.y / av.y;
-		if (av.y == 0) ret.y = 0.0;
-		ret.z = ab.z / av.z;
-		if (av.z == 0) ret.z = 0.0;
-
-		return ret;
-	}
 private:
 };
 typedef Vector3<float> Vector3f;
