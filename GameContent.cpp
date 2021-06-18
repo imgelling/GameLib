@@ -103,7 +103,7 @@ bool GameContent::Load(std::string file, Mesh& mesh)
 					ss >> junk >> vert.x >> vert.y >> vert.z;
 					verts.emplace_back(vert);
 					// start counting verts
-					vcount.emplace_back(1);
+					vcount.emplace_back(1.0f);
 					// if it has no normals make temporary ones
 					if (!hasNormals)
 					{
