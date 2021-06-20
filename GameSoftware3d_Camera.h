@@ -5,19 +5,17 @@ class Camera
 {
 public:
 	Vector3f pos;
+	Vector3f forward;
 	Vector3f right;
 	Vector3f up;
-	Vector3f forward;
 	Vector3f rotation;
 	Camera();
 	void SetRotation(const float, const float, const float);
 	void SetPosition(const Vector3f&);
-	void SetUp(const Vector3f&);
-	void SetForward(const Vector3f&);
-	void SetRight(const Vector3f&);
+	Matrix4x4f GenerateView();
+	Matrix4x4f GenerateLookAtView(Vector3f&);
 
-
-	Vector3f modRight;
-	Vector3f modUp;
-	Vector3f modForward;
+	float yaw;
+	float pitch;
+	float roll;
 };
