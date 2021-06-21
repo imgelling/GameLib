@@ -20,6 +20,8 @@ Camera::Camera()
 	up.Normalize();
 };
 
+
+
 void Camera::SetRotation(const float x, const float y, const float z)
 {
 	// Setup rotation matrices
@@ -36,6 +38,8 @@ void Camera::SetRotation(const float x, const float y, const float z)
 	else if (z)
 	{
 		// nothing yet
+		rotation.z += z;
+		roll += z;
 	}
 
 	forward.x = cos(yaw) * cos(pitch);
@@ -56,6 +60,35 @@ void Camera::SetPosition(const Vector3f& in)
 	//modPos = position;
 }
 
+Matrix4x4f rotateM(const float ang, const Vector3f& axis)
+{
+	float c = cos(ang);
+	float s = sin(ang);
+	float x = axis.x;
+	float y = axis.y;
+	float z = axis.z;
+	Vector3f temp(axis);
+	temp.x = temp.x * (1.0f - c);
+	temp.y = temp.y * (1.0f - c);
+	temp.z = temp.z * (1.0f - c);
+
+
+	Matrix4x4f ret;
+	ret.m[0] = temp.x * x + c;
+	ret.m[1] = temp.x * y + z * s;
+	ret.m[2] = temp.x * z - y * s;
+
+	ret.m[4] = temp.y * x - z * s;
+	ret.m[5] = c + temp.y * y;
+	ret.m[6] = temp.y * z + x * s;
+
+	ret.m[8] = temp.z * x + y * s;
+	ret.m[9] = temp.z * y - x * s;
+	ret.m[10] = c + temp.z * z;
+
+	return ret;
+}
+
 Matrix4x4f Camera::GenerateView()
 {
 	Matrix4x4f view;
@@ -73,6 +106,10 @@ Matrix4x4f Camera::GenerateView()
 	view.m[2] = forward.x;
 	view.m[6] = forward.y;
 	view.m[10] = forward.z;
+
+	Matrix4x4f r = rotateM(roll, forward);
+
+	view = view * r;
 
 	Matrix4x4f ct;
 	ct.SetTranslation(-pos.x, -pos.y, -pos.z);
