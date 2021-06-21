@@ -32,3 +32,12 @@ enum class RasterMode
 };
 RasterMode& operator++ (RasterMode& rmode, int);
 std::ostream& operator<< (std::ostream& stm, RasterMode rmode);
+
+enum class RasterType
+{
+	Barycentric,
+	ScanLine,
+	None
+};
+RasterType& operator++ (RasterType& rType, int);
+std::ostream& operator<< (std::ostream& stm, RasterType rmode);

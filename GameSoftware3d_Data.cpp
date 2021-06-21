@@ -21,3 +21,19 @@ std::ostream& operator<< (std::ostream& stm, RasterMode rmode)
 	default: return stm << "Unknown Enumerator";
 	}
 }
+
+RasterType& operator++ (RasterType& rType, int)
+{
+	rType = static_cast<RasterType>(static_cast<int>(rType) + 1);
+	if (rType == RasterType::None) rType = static_cast<RasterType>(0);
+	return rType;
+}
+std::ostream& operator<< (std::ostream& stm, RasterType rmode)
+{
+	switch (rmode)
+	{
+	case RasterType::Barycentric: return stm << "Barycentric (Slower but smoother)"; 
+	case RasterType::ScanLine: return stm << "Scan Line (Faster but noisey)";
+	default: return stm << "Unknown Enumerator";
+	}
+}
