@@ -75,7 +75,9 @@ void tcp_connection::handle_read(const asio::error_code& error, size_t bytes)
 	}
 	else
 	{
-		std::cout << "Error on handle read" << std::endl;
+		// Don't really need, application should handle all errors
+		// So they know what is happening
+		//std::cout << "Error on handle penis read" << std::endl;
 	}
 	DoRead(str, error, bytes);
 	if (!is_stopped) Read();
@@ -86,7 +88,8 @@ void tcp_connection::Stop()
 {
 	if (!is_stopped)
 	{
-		//socket_.cancel();
+		// Un commented cancel, because we should cancel any reads or writes
+		socket_.cancel();
 		socket_.close();	// this or acceptor sometimes throws exception, trying to close after it is closed
 		is_stopped = true;
 	}
