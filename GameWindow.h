@@ -20,8 +20,6 @@
 #else
 #pragma comment(lib,"SDL2")
 #pragma comment(lib,"OpenGL32")
-#pragma comment(lib,"SDL2_image")
-//#pragma comment(lib,"SDL2_mixer")
 #endif
 
 
