@@ -2,9 +2,10 @@
 
 #ifdef __linux__
 #include <SDL2/SDL_opengl.h>
-#include <SDL2/SDL_image.h>
 #else
-
+#define STBI_ONLY_PNG
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb\stb_image.h" 
 #include <gl\glew.h>
 #include <SDL_opengl.h>
 #endif
@@ -79,10 +80,15 @@ bool TextureManager::Load(std::string filename, GameTexture2D &tex, bool mipmaps
         return true;
     }
 
-	SDL_Surface* surf = NULL;
-	surf = IMG_Load(file.c_str());
-	if (surf == NULL)
-		return false;
+
+	// old sdl image crap
+	//SDL_Surface* surf = NULL;
+	//surf = IMG_Load(file.c_str());
+	//if (surf == NULL)
+	//	return false;
+
+	// New stb_image crap
+
 
 	//GLenum texture_format;
 	//GLint ncolors;
