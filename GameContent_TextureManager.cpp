@@ -1,24 +1,15 @@
 // INCLUDES ////////////////////////////////////////////////////////////////////
 
 #ifdef __linux__
-#include <SDL2/SDL_opengl.h>
+
 #else
 #define STBI_ONLY_PNG
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb\stb_image.h" 
 #include <gl\glew.h>
-//#include <SDL_opengl.h>
-#include <SDL.h>
 #endif
 
 #include "GameContent_TextureManager.h"
-
-// remove
-#include <iostream>
-
-
-
-
 
 // METHODS /////////////////////////////////////////////////////////////////////
 
