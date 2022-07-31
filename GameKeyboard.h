@@ -27,8 +27,8 @@ public:
 	bool WasReleased(const char *);
 	bool isHeld(const char *);
 private:
-	const Uint8* currentKeyStates;
-	Uint8* lastKeyStates;
+	const uint8_t* currentKeyStates;
+	uint8_t* lastKeyStates;
 
 	int keys;
 	std::string inputString;

@@ -1,23 +1,15 @@
 // INCLUDES ////////////////////////////////////////////////////////////////////
 
 #ifdef __linux__
-#include <SDL2/SDL_opengl.h>
-#include <SDL2/SDL_image.h>
+
 #else
-
+#define STBI_ONLY_PNG
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb\stb_image.h" 
 #include <gl\glew.h>
-#include <SDL_opengl.h>
-#include <SDL_image.h>
-
 #endif
 
 #include "GameContent_TextureManager.h"
-
-
-
-
-
-
 
 // METHODS /////////////////////////////////////////////////////////////////////
 
@@ -63,6 +55,10 @@ bool TextureManager::Load(std::string filename, GameTexture2D &tex, bool mipmaps
 {
 	std::string file = filename;
 	file += ".png";
+	int32_t width = 0;
+	int32_t height = 0;
+	int32_t bytesPerPixel = 0;
+	void* data = NULL;
 
 	// See if the texture is already loaded
 	// and if so return a reference to it
@@ -81,15 +77,12 @@ bool TextureManager::Load(std::string filename, GameTexture2D &tex, bool mipmaps
         return true;
     }
 
-	SDL_Surface* surf = NULL;
-	surf = IMG_Load(file.c_str());
-	if (surf == NULL)
+	// Read data
+	data = stbi_load(file.c_str(), &width, &height, &bytesPerPixel, 0);
+	if (data == NULL)
+	{
 		return false;
-
-	//GLenum texture_format;
-	//GLint ncolors;
-	//ncolors = surf->format->BytesPerPixel;
-	//texture_format = surf->format->format;
+	}
 
     // Not already loaded so we create it
     glGenTextures(1,&tex.bind);
@@ -107,17 +100,24 @@ bool TextureManager::Load(std::string filename, GameTexture2D &tex, bool mipmaps
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, largest_supported_anisotropy);
 	// When adding gfx options, just div by 2 down to 2x; so 16, 8, 4, 2, 0
 
-	tex.width = surf->w;
-	tex.height = surf->h;
+	tex.width = width;
+	tex.height = height;
 	tex.widthDiv = 1.0f / (float)tex.width;
 	tex.heightDiv = 1.0f / (float)tex.height;
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surf->w, surf->h, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, surf->pixels);
+	if (bytesPerPixel == 4)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, data);
+	}
+	else if (bytesPerPixel == 3)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, data);
+	}
 	if (mipmaps)
 		glGenerateMipmap(GL_TEXTURE_2D);
 	Textures[filename] = tex;
 
-	SDL_FreeSurface(surf);
+	// Free up image loaded to memory
+	stbi_image_free(data);
 
 	// record that we loaded this texture
 	Textures[file] = tex;

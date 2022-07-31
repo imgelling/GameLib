@@ -14,7 +14,7 @@ GameKeyboard::GameKeyboard()
 	currentKeyStates = SDL_GetKeyboardState(&keys);
 	if (keys != 0)
 	{
-		lastKeyStates = new Uint8[keys];
+		lastKeyStates = new uint8_t[keys];
 #ifdef _DEBUG
 		if (keys == NULL)
 			std::cout << "shit" << std::endl;
@@ -136,8 +136,8 @@ bool GameKeyboard::WasPressed(const char *name)
 	else
 #endif
 	{
-		Uint8 testc = currentKeyStates[code];
-		Uint8 testl = lastKeyStates[code];
+		uint8_t testc = currentKeyStates[code];
+		uint8_t testl = lastKeyStates[code];
 		// Save state of the key
 		lastKeyStates[code] = currentKeyStates[code];
 
@@ -163,8 +163,8 @@ bool GameKeyboard::WasReleased(const char *name)
 	else
 #endif
 	{
-		Uint8 testc = currentKeyStates[code];
-		Uint8 testl = lastKeyStates[code];
+		uint8_t testc = currentKeyStates[code];
+		uint8_t testl = lastKeyStates[code];
 
 		// Save state of the key
 		lastKeyStates[code] = currentKeyStates[code];
@@ -190,8 +190,8 @@ bool GameKeyboard::isHeld(const char *name)
 	else
 #endif
 	{
-		Uint8 testc = currentKeyStates[code];
-		Uint8 testl = lastKeyStates[code];
+		uint8_t testc = currentKeyStates[code];
+		uint8_t testl = lastKeyStates[code];
 
 		// Save state of the key
 		lastKeyStates[code] = currentKeyStates[code];
