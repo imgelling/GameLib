@@ -17,29 +17,29 @@
 #endif
 
 
-#include "GamePerf.h"
-#include "GameMath.h"
-#include "GameSpriteBatch.h"
-#include "GameWindow.h"
-#include "GameTimer.h"
-#include "GameLog.h"
-#include "GameClasses.h"
-#include "GameFPS.h"
-#include "GameContent.h"
-#include "GameSpriteSheet.h"
-#include "GameCamera.h"
-#include "GameCollision.h"
 #include "GameAnimation.h"
-#include "GameGUI.h"
-#include "GamePixelMode.h"
+#include "GameCamera.h"
+#include "GameClasses.h"
+#include "GameCollision.h"
+#include "GameContent.h"
 #include "GameDebug.h"
-#include "GameRandom.h"
-#include "GameThreadPool.h"
+#include "GameFPS.h"
+#include "GameGUI.h"
+#include "GameLog.h"
+#include "GameMath.h"
 #ifdef GAME_DO_NETWORK
 #include "GameNetwork.h"
 #endif
+#include "GamePerf.h"
+#include "GamePixelMode.h"
+#include "GameRandom.h"
 #include "GameSoftware3d_Camera.h"
 #include "GameSoftware3d_Data.h"
+#include "GameSpriteBatch.h"
+#include "GameSpriteSheet.h"
+#include "GameThreadPool.h"
+#include "GameTimer.h"
+#include "GameWindow.h"
 
 
 
