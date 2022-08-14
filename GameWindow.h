@@ -30,16 +30,16 @@
 
 struct GameAttributes
 {
-	int GL_ContextMajor;
-	int GL_ContextMinor;
-	int GL_RedSize;
-	int GL_BlueSize;
-	int GL_GreenSize;
-	int GL_AlphaSize;
-	int GL_DoubleBuffer;
-	int GL_DepthSize;
-	int GL_MultiSamples;
-	int GL_Debug;
+	uint8_t GL_ContextMajor;
+	uint8_t GL_ContextMinor;
+	uint8_t GL_RedSize;
+	uint8_t GL_BlueSize;
+	uint8_t GL_GreenSize;
+	uint8_t GL_AlphaSize;
+	uint8_t GL_DoubleBuffer;
+	uint8_t GL_DepthSize;
+	uint8_t GL_MultiSamples;
+	bool GL_Debug;
 	double Framelock;
 	unsigned int Framework;
 
@@ -54,51 +54,53 @@ struct GameAttributes
 		GL_DoubleBuffer = -1;
 		GL_DepthSize = 0;
 		GL_MultiSamples = 0;
-		GL_Debug = 0;
+		GL_Debug = false;
 		Framelock = 0;
 		Framework = SDL_WINDOW_OPENGL; // Defaults to OpenGL
 	}
 };
 
 
-// Contains information about the host's system
-class SystemInfo
+namespace game
 {
-private:
-	// Contains information about the host's cpu
-	struct CPUInfo
+	// Contains information about the host's system
+	class SystemInfo
 	{
+	private:
+		// Contains information about the host's cpu
+		struct CPUInfo
+		{
+		public:
+			unsigned int processorCount = 0;
+		};
+		// Contains information about the host's gpu being used
+		struct GPUInfo
+		{
+			int internalPixelFormat = 0;
+			int internalPixelType = 0;
+			int totalMemory = 0;
+			int freeMemory = 0;
+			int glVersionMajor = 0;
+			int glVersionMinor = 0;
+			int glShaderLanguageVersion = 0;
+			int glMultisampleBuffers = 0;
+			int glMultisampleSamples = 0;
+			Color frontBufferColorSize;
+			Color backBufferColorSize;
+			int depthBufferSize = 0;
+			std::string renderer;
+			std::string vendor;
+		};
 	public:
-		unsigned int processorCount = 0;
+		CPUInfo cpuInfo;
+		GPUInfo gpuInfo;
 	};
-	// Contains information about the host's gpu being used
-	struct GPUInfo
-	{
-		int internalPixelFormat = 0;
-		int internalPixelType = 0;
-		int totalMemory = 0;
-		int freeMemory = 0;
-		int glVersionMajor = 0;
-		int glVersionMinor = 0;
-		int glShaderLanguageVersion = 0;
-		int glMultisampleBuffers = 0;
-		int glMultisampleSamples = 0;
-		Color frontBufferColorSize;
-		Color backBufferColorSize;
-		int depthBufferSize = 0;
-		std::string renderer;
-		std::string vendor;
-	};
-public:
-	CPUInfo cpuInfo;
-	GPUInfo gpuInfo;
-};
-
-extern SystemInfo systemInfo;
+}
 
 class Game
 {
     public:
+		game::SystemInfo systemInfo;
         Game();
         ~Game();
         void ToggleFullscreen(bool);
@@ -164,5 +166,14 @@ class Game
 		GameTimer RenderTime;
 		GameTimer UpdateTime;
 		GameAttributes WindowAttrib;
+
+		// test
+		static void GLAPIENTRY openglCallbackFunction(GLenum source,
+			GLenum type,
+			GLuint id,
+			GLenum severity,
+			GLsizei length,
+			const GLchar* message,
+			const void* userParam);
 };
 

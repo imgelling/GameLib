@@ -6,9 +6,9 @@
 #include "GameDebug.h"
 
 
-SystemInfo systemInfo;
+//SystemInfo systemInfo;
 
-static void GLAPIENTRY openglCallbackFunction(GLenum source,
+void GLAPIENTRY Game::openglCallbackFunction(GLenum source,
 	GLenum type,
 	GLuint id,
 	GLenum severity,
