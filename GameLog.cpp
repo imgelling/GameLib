@@ -21,6 +21,11 @@ void GameLog::Line()
 
 GameLog::GameLog(std::string filename)
 {
+	for (uint16_t buff = 0; buff < 256; buff++)
+	{
+		buffer[buff] = 0;
+	}
+	rawtime = 0;
 	streamlock.lock();
 	stream.open(filename.c_str(), std::ios::out);
 	streamlock.unlock();

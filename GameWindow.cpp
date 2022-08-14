@@ -386,11 +386,11 @@ bool Game::CreateTheWindow()
 		else
 			flags |= SDL_WINDOW_RESIZABLE;
 	}
-	if (WindowAttrib.Framework == SDL_WINDOW_OPENGL)
+	if (WindowAttrib.Framework & SDL_WINDOW_OPENGL)
 	{
 		flags |= SDL_WINDOW_OPENGL;
 	}
-	else if (WindowAttrib.Framework == SDL_WINDOW_VULKAN)
+	else if (WindowAttrib.Framework & SDL_WINDOW_VULKAN)
 	{
 		flags |= SDL_WINDOW_VULKAN;
 	}
@@ -406,7 +406,7 @@ bool Game::CreateTheWindow()
 		Logger->Error(str.str().c_str());
 		return false;
 	}
-	if (WindowAttrib.Framework == SDL_WINDOW_OPENGL)
+	if (WindowAttrib.Framework & SDL_WINDOW_OPENGL)
 	{
 		glcontext = SDL_GL_CreateContext(window);
 		glewExperimental = GL_TRUE;

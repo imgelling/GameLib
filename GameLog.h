@@ -25,7 +25,7 @@ class GameLog {
     std::ofstream stream;
 	char buffer[256];
 	time_t rawtime;
-	struct tm timeinfo;
+    tm timeinfo = { 0 };
     enum class LogType {NORMAL, WARNING, ERRORS, NONE};
     void Write(LogType type, std::string logline);
 	inline void GetTime();
