@@ -23,6 +23,7 @@
 #include "GameCollision.h"
 #include "GameContent.h"
 #include "GameDebug.h"
+#include "GameErrors.h"
 #include "GameFPS.h"
 #include "GameGUI.h"
 #include "GameLog.h"
