@@ -14,9 +14,9 @@ namespace game
 		}
 	}
 
-	bool operator== (const GameErrors err, const bool flag)
+	bool operator== (const GameError err, const bool flag)
 	{
-		if (err == GameErrors::None)
+		if (err.lastErrorType == GameErrors::None)
 		{
 			return false;
 		}

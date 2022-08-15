@@ -17,6 +17,6 @@ namespace game
 		GameErrors lastErrorType = GameErrors::None;
 		std::string lastErrorString = "None";
 	};
-	bool operator== (const GameErrors err, const bool flag);
+	bool operator== (const GameError err, const bool flag);
 	std::ostream& operator<< (std::ostream& stream, const GameErrors gerror);
 }
