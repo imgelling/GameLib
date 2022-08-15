@@ -16,7 +16,9 @@ namespace game
 	{
 		GameErrors lastErrorType = GameErrors::None;
 		std::string lastErrorString = "None";
+		explicit operator bool() const;
 	};
-	bool operator== (const GameError err, const bool flag);
-	std::ostream& operator<< (std::ostream& stream, const GameErrors gerror);
+
+	// Cant seems to get this one in the struct/class
+	std::ostream& operator<< (std::ostream& stream, const game::GameError error);
 }

@@ -2,24 +2,22 @@
 
 namespace game
 {
-	// needs same thing as below
-	std::ostream& operator<< (std::ostream& stream, const GameErrors gerror)
+	GameError::operator bool() const
 	{
-		switch (gerror)
+		return  (lastErrorType != GameErrors::None);
+	}
+	std::ostream& operator<< (std::ostream& stream , const GameError error)
+	{
+		uint32_t errID = (uint32_t)error.lastErrorType;
+		switch (errID)
 		{
-		case GameErrors::None: return stream << "GameErrorNone";
-		case GameErrors::GameMemoryAllocation: return stream << "GameErrorMemoryAllocation";
-		case GameErrors::GameInvalidParameter: return stream << "GameErrorInvalidParameters";
-		default: return stream << "Unknown Error";
+		case (uint32_t)GameErrors::None: stream << "GameErrorNone"; break;
+		case (uint32_t)GameErrors::GameMemoryAllocation: stream << "GameErrorMemoryAllocation"; break;
+		case (uint32_t)GameErrors::GameInvalidParameter: stream << "GameErrorInvalidParameters"; break;
+		default: return stream << "GameErrorUnknown";
 		}
+		// Append the error text to general error code
+		return stream << " : " << error.lastErrorString << "\n";
 	}
 
-	bool operator== (const GameError err, const bool flag)
-	{
-		if (err.lastErrorType == GameErrors::None)
-		{
-			return false;
-		}
-		return true;
-	}
 }
