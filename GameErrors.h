@@ -9,7 +9,8 @@ namespace game
 	{
 		None = 0,
 		GameMemoryAllocation,
-		GameInvalidParameter
+		GameInvalidParameter,
+		GameWindowsSpecific
 	};
 	
 	struct GameError

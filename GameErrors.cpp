@@ -14,6 +14,7 @@ namespace game
 		case (uint32_t)GameErrors::None: stream << "GameErrorNone"; break;
 		case (uint32_t)GameErrors::GameMemoryAllocation: stream << "GameErrorMemoryAllocation"; break;
 		case (uint32_t)GameErrors::GameInvalidParameter: stream << "GameErrorInvalidParameters"; break;
+		case (uint32_t)GameErrors::GameWindowsSpecific: stream << "GameErrorWindowsSpecific"; break;
 		default: return stream << "GameErrorUnknown";
 		}
 		// Append the error text to general error code
