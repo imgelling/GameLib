@@ -23,5 +23,6 @@ namespace game
 	};
 
 	// Cant seems to get this one in the struct/class
+
 	std::ostream& operator<< (std::ostream& stream, const game::GameError error);
 }
