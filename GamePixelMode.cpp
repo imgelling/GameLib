@@ -99,7 +99,7 @@ GamePixelMode::~GamePixelMode()
 // Create Window Buffer does not create a pow2 texture
 void GamePixelMode::CreateBuffers(int width, int height, int resW, int resH)
 {
-	float scale = 0.0f;
+	//float scale = 0.0f;
 	this->width = width;
 	this->height = height;
 	gameWidth = resW;
@@ -117,11 +117,11 @@ void GamePixelMode::CreateBuffers(int width, int height, int resW, int resH)
 	current = 0;
 	
 
-	float w = gameWidth / (float)width;
-	float h = gameHeight / (float)height;
-	w < h ? scale = w : scale = h;
-	int posx = (int)((gameWidth - (width * scale)) / 2);
-	int posy = (int)((gameHeight - (height * scale)) / 2);
+	//float w = gameWidth / (float)width;
+	//float h = gameHeight / (float)height;
+	//w < h ? scale = w : scale = h;
+	//int posx = (int)((gameWidth - (width * scale)) / 2);
+	//int posy = (int)((gameHeight - (height * scale)) / 2);
 	for (int i = 0; i < 2; i++)
 	{
 		glGenTextures(1, &WindowBuffer[i].bind);
